@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinicTrack — Premium Patient Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #F7F9FC; }
+        .text-primary { color: #2F80ED; }
+        .bg-primary { background-color: #2F80ED; }
+        .text-secondary { color: #27AE60; }
+        .bg-secondary { background-color: #27AE60; }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        .slide-up { animation: slideUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="text-gray-800 antialiased selection:bg-blue-100 selection:text-blue-900">
+
+<!-- Nav -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center gap-2 text-xl font-bold text-gray-900">
+                <i data-feather="activity" class="text-primary"></i> ClinicTrack
+            </div>
+            <div>
+                <a href="/app" class="bg-primary hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-colors shadow-sm shadow-blue-200">Start Using App</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="py-20 lg:py-32 overflow-hidden relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center slide-up">
+        <h1 class="text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight mb-6">
+            Simple Patient Management <br class="hidden lg:block"/> for Clinics
+        </h1>
+        <p class="text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
+            Track patients, prescriptions, and visits in seconds. A premium, seamless workflow designed specifically for busy doctors.
+        </p>
+        <div class="flex justify-center gap-4">
+            <a href="/app" class="bg-primary hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg shadow-blue-200 hover:-translate-y-1">
+                Start Using App
+            </a>
+            <a href="#contact" class="bg-white border border-gray-200 hover:border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:bg-gray-50">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-white border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 slide-up" style="animation-delay: 0.2s;">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900">Everything you need. Nothing you don't.</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-10">
+            <!-- Feature 1 -->
+            <div class="p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-xl bg-blue-100 text-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-feather="users"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Patient Records</h3>
+                <p class="text-gray-500 leading-relaxed">Centralized database for all your patients. Search instantly by name or phone number without waiting.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-xl bg-green-100 text-secondary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-feather="clipboard"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Fast Visit Tracking</h3>
+                <p class="text-gray-500 leading-relaxed">Log symptoms, prescriptions, and clinical notes in a beautifully structured timeline. See patient history at a glance.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-xl bg-blue-100 text-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <i data-feather="zap"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Smart Suggestions</h3>
+                <p class="text-gray-500 leading-relaxed">Type "fe" to get "fever". Our intelligent autocomplete learns and speeds up your clinical documentation dramatically.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Story Section -->
+<section class="py-24 bg-[#F7F9FC]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center slide-up" style="animation-delay: 0.3s;">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Built for the real clinic.</h2>
+        <p class="text-lg text-gray-600 leading-relaxed">
+            We noticed that doctors spend too much time navigating clunky, outdated software or managing paper files. ClinicTrack was built to solve this. It's clean, lightning-fast, and designed to get out of your way so you can focus on what matters: your patients. No complex menus, no slow loading screens—just a premium tool that works as fast as you do.
+        </p>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-24 bg-white border-t border-gray-100">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center slide-up" style="animation-delay: 0.4s;">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Get in touch</h2>
+        <div class="p-8 rounded-3xl bg-gray-50 border border-gray-100">
+            <div class="flex items-center justify-center gap-3 mb-4 text-gray-700">
+                <i data-feather="mail" class="text-primary"></i>
+                <a href="mailto:karanmandal9654@gmail.com" class="text-lg hover:text-primary transition-colors">karanmandal9654@gmail.com</a>
+            </div>
+            <div class="flex items-center justify-center gap-3 mb-8 text-gray-700">
+                <i data-feather="phone" class="text-secondary"></i>
+                <span class="text-lg">+91 9654387865</span>
+            </div>
+            <a href="mailto:karanmandal9654@gmail.com" class="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-6 py-3 rounded-xl font-medium transition-all shadow-md">
+                <i data-feather="send" class="w-4 h-4"></i> Contact Us
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-8 text-center text-gray-400 text-sm bg-white">
+    <p>&copy; 2026 ClinicTrack. Built with excellence.</p>
+</footer>
+
+<script>
+    feather.replace();
+</script>
+</body>
+</html>
