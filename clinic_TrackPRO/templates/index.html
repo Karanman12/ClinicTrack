@@ -521,6 +521,84 @@
             initAutocomplete(symptomsInput);
         }
 
+        // Visit Type Dynamic Logic
+        const visitTypeSelect = document.getElementById('visit_type');
+        if (visitTypeSelect) {
+            const form = visitTypeSelect.closest('form');
+
+            visitTypeSelect.addEventListener('change', (e) => {
+                const type = e.target.value;
+                const sympField = document.getElementById('symptoms')?.closest('div');
+                const presField = document.getElementById('prescription')?.closest('div');
+                const notesField = document.getElementById('notes');
+                const sympInput = document.getElementById('symptoms');
+                const presInput = document.getElementById('prescription');
+                const presLabel = document.querySelector('label[for="prescription"]');
+                const notesLabel = document.querySelector('label[for="notes"]');
+
+                // 1. Reset Defaults
+                if (sympField) sympField.style.display = 'block';
+                if (presField) presField.style.display = 'block';
+                if (sympInput) sympInput.placeholder = 'e.g. fever, cough...';
+                if (presInput) presInput.placeholder = 'Medicines and dosage...';
+                if (notesField) notesField.placeholder = 'Optional observations...';
+                if (presLabel) presLabel.innerText = 'Prescription';
+                if (notesLabel) notesLabel.innerText = 'Notes';
+                sympInput?.classList.remove('input-error');
+                presInput?.classList.remove('input-error');
+
+                // Remove any existing info-box
+                const existingBox = form.querySelector('.visit-type-info');
+                if (existingBox) existingBox.remove();
+
+                const addInfoBox = (text, colorClass) => {
+                    const box = document.createElement('div');
+                    box.className = `visit-type-info mb-4 p-2 px-3 text-xs rounded-lg font-medium text-white ${colorClass}`;
+                    box.innerText = text;
+                    form.prepend(box);
+                };
+
+                if (type === 'Consultation') {
+                    // Use defaults
+                } else if (type === 'Follow-up') {
+                    if (sympField) sympField.style.display = 'none';
+                    if (notesLabel) notesLabel.innerText = 'Patient Progress';
+                    if (notesField) notesField.placeholder = 'How is patient feeling since last visit?';
+                    addInfoBox('Follow-up visit — document patient progress', 'bg-blue-500');
+                } else if (type === 'Check-up') {
+                    if (sympInput) {
+                        const label = document.querySelector('label[for="symptoms"]');
+                        if (label) label.innerHTML = 'Current Complaints (if any)';
+                    }
+                    if (presField) presField.style.display = 'none';
+                    if (notesLabel) notesLabel.innerText = 'Observations & Vitals';
+                    if (notesField) notesField.placeholder = 'BP, weight, general health observations...';
+                    addInfoBox('Routine check-up — no prescription needed', 'bg-green-500');
+                } else if (type === 'Emergency') {
+                    if (sympInput) {
+                        const label = document.querySelector('label[for="symptoms"]');
+                        if (label) label.innerHTML = 'Symptoms <span class="text-red-500">*</span>';
+                        sympInput.placeholder = 'Describe urgent symptoms...';
+                    }
+                    if (presInput) presInput.placeholder = 'Immediate treatment given...';
+                    sympInput?.classList.add('input-error');
+                    presInput?.classList.add('input-error');
+                    addInfoBox('Emergency visit — all details required', 'bg-red-500');
+                } else if (type === 'Procedure') {
+                    if (sympInput) {
+                        const label = document.querySelector('label[for="symptoms"]');
+                        if (label) label.innerHTML = 'Symptoms (Optional)';
+                        sympInput.placeholder = 'Any complaints before procedure...';
+                    }
+                    if (presLabel) presLabel.innerText = 'Procedure Performed';
+                    if (presInput) presInput.placeholder = 'Describe procedure done...';
+                    if (notesLabel) notesLabel.innerText = 'Post-care Instructions';
+                    if (notesField) notesField.placeholder = 'Instructions given to patient...';
+                    addInfoBox('Procedure visit', 'bg-purple-500');
+                }
+            });
+        }
+
         // Remove error styling on input
         document.querySelectorAll('input, textarea').forEach(el => {
             el.addEventListener('input', () => {
