@@ -50,6 +50,7 @@ COMMON_SYMPTOMS = [
     "diabetes", "allergies",
 ]
 
+
 # ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
@@ -138,6 +139,7 @@ def add_visit(
     prescription: str = Form(...),
     notes: str = Form(""),
     visit_type: str = Form(""),
+    diagnosis: str = Form(""),
     amount: int = Form(0),
     db: Session = Depends(get_db),
 ):
@@ -148,6 +150,7 @@ def add_visit(
         patient_id=patient_id,
         symptoms=symptoms.strip(),
         prescription=prescription.strip(),
+        diagnosis=diagnosis.strip() if diagnosis else None,
         notes=notes.strip(),
         visit_type=visit_type.strip() if visit_type else None,
         amount=amount,
@@ -190,6 +193,7 @@ def update_visit(
     prescription: str = Form(...),
     notes: str = Form(""),
     visit_type: str = Form(""),
+    diagnosis: str = Form(""),
     amount: int = Form(0),
     db: Session = Depends(get_db),
 ):
@@ -200,6 +204,7 @@ def update_visit(
     if visit:
         visit.symptoms = symptoms.strip()
         visit.prescription = prescription.strip()
+        visit.diagnosis = diagnosis.strip() if diagnosis else None
         visit.notes = notes.strip()
         visit.visit_type = visit_type.strip() if visit_type else None
         visit.amount = amount

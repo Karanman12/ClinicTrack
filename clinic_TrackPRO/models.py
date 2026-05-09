@@ -48,6 +48,8 @@ class Visit(Base):
     prescription = Column(Text, nullable=False)
     notes = Column(Text, default="")
     amount = Column(Integer, nullable=True)
+    visit_type = Column(String(50), nullable=True)
+    diagnosis = Column(String(200), nullable=True)
     visit_date = Column(DateTime, default=datetime.utcnow)
 
     # Back-reference to the parent patient
