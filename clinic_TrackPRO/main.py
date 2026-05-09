@@ -100,12 +100,21 @@ def add_patient(
     phone: str = Form(...),
     age: int = Form(...),
     gender: str = Form(...),
+    blood_group: str = Form(""),
+    allergies: str = Form(""),
     db: Session = Depends(get_db),
 ):
     """
     Create a new patient and redirect back to the home page.
     """
-    patient = Patient(name=name.strip(), phone=phone.strip(), age=age, gender=gender.strip())
+    patient = Patient(
+        name=name.strip(),
+        phone=phone.strip(),
+        age=age,
+        gender=gender.strip(),
+        blood_group=blood_group.strip() if blood_group else None,
+        allergies=allergies.strip() if allergies else None
+    )
     db.add(patient)
     db.commit()
     return RedirectResponse(url=f"/app/patient/{patient.id}", status_code=303)
@@ -118,6 +127,8 @@ def update_patient(
     phone: str = Form(...),
     age: int = Form(...),
     gender: str = Form(...),
+    blood_group: str = Form(""),
+    allergies: str = Form(""),
     db: Session = Depends(get_db),
 ):
     """
@@ -129,6 +140,8 @@ def update_patient(
         patient.phone = phone.strip()
         patient.age = age
         patient.gender = gender.strip()
+        patient.blood_group = blood_group.strip() if blood_group else None
+        patient.allergies = allergies.strip() if allergies else None
         db.commit()
     return RedirectResponse(url=f"/app/patient/{patient_id}", status_code=303)
 

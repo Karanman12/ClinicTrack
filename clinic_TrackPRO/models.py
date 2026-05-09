@@ -23,6 +23,8 @@ class Patient(Base):
     phone = Column(String(15), nullable=False)
     age = Column(Integer, nullable=True)
     gender = Column(String(10), nullable=True)
+    blood_group = Column(String(5), nullable=True)
+    allergies = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # One patient can have many visits (newest first by default)
