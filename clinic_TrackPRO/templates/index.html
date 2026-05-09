@@ -192,6 +192,17 @@
                                 <button type="button" onclick="clearVisitForm()" class="text-xs text-gray-500 hover:text-gray-900" id="clearBtn" style="display:none;">Clear</button>
                             </div>
                             <form action="/add_visit/{{ selected_patient.id }}" method="post" id="visitForm" class="p-5 spa-form">
+                                <div class="mb-4">
+                                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2" for="visit_type">Visit Type</label>
+                                    <select id="visit_type" name="visit_type" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors">
+                                        <option value="" selected>Select Visit Type</option>
+                                        <option value="Consultation">Consultation</option>
+                                        <option value="Follow-up">Follow-up</option>
+                                        <option value="Emergency">Emergency</option>
+                                        <option value="Check-up">Check-up</option>
+                                        <option value="Procedure">Procedure</option>
+                                    </select>
+                                </div>
                                 <div class="mb-4 relative">
                                     <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2" for="symptoms">Symptoms <span class="text-red-500">*</span></label>
                                     <input type="text" id="symptoms" name="symptoms" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors" placeholder="e.g. fever, cough..." autocomplete="off">

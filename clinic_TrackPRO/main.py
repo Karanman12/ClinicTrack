@@ -137,6 +137,7 @@ def add_visit(
     symptoms: str = Form(...),
     prescription: str = Form(...),
     notes: str = Form(""),
+    visit_type: str = Form(""),
     amount: int = Form(0),
     db: Session = Depends(get_db),
 ):
@@ -148,6 +149,7 @@ def add_visit(
         symptoms=symptoms.strip(),
         prescription=prescription.strip(),
         notes=notes.strip(),
+        visit_type=visit_type.strip() if visit_type else None,
         amount=amount,
     )
     db.add(visit)
@@ -187,6 +189,7 @@ def update_visit(
     symptoms: str = Form(...),
     prescription: str = Form(...),
     notes: str = Form(""),
+    visit_type: str = Form(""),
     amount: int = Form(0),
     db: Session = Depends(get_db),
 ):
@@ -198,6 +201,7 @@ def update_visit(
         visit.symptoms = symptoms.strip()
         visit.prescription = prescription.strip()
         visit.notes = notes.strip()
+        visit.visit_type = visit_type.strip() if visit_type else None
         visit.amount = amount
         db.commit()
         return RedirectResponse(url=f"/app/patient/{visit.patient_id}", status_code=303)
