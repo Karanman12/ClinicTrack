@@ -43,6 +43,9 @@
             </a>
             <div class="flex items-center gap-4 text-sm">
                 <span class="text-gray-500 hidden sm:inline-flex items-center gap-1"><kbd class="bg-gray-100 border border-gray-200 px-1.5 py-0.5 rounded text-xs text-gray-500 font-mono">/</kbd> to search</span>
+                <a href="/settings" class="text-gray-600 hover:text-gray-900 transition-colors p-1.5 hover:bg-gray-100 rounded-lg" title="Clinic Settings">
+                    <i data-feather="settings" class="w-5 h-5"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -197,7 +200,7 @@
                                     <div id="suggestionBox" class="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg hidden overflow-hidden"></div>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2" for="prescription">Prescription <span class="text-red-500">*</span></label>
+                                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2" for="prescription">Prescription</label>
                                     <textarea id="prescription" name="prescription" rows="3" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors resize-none" placeholder="Medicines and dosage..."></textarea>
                                     <p class="text-red-500 text-xs mt-1 hidden" id="err-prescription">This field is required.</p>
                                 </div>
@@ -363,7 +366,7 @@
             let firstInvalid = null;
             
             inputs.forEach(input => {
-                if(input.name === 'notes') return; // optional
+                if(input.name === 'notes' || input.name === 'prescription' || input.name === 'amount') return; // optional
                 const errEl = document.getElementById(`err-${input.id}`);
                 if (!input.value.trim()) {
                     isValid = false;

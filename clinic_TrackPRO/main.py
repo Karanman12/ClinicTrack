@@ -16,7 +16,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from database import engine, get_db, Base
-from models import Patient, Visit
+from models import Patient, Visit, Settings
 
 # ---------------------------------------------------------------------------
 # App setup
@@ -213,10 +213,11 @@ def print_prescription(visit_id: int, request: Request, db: Session = Depends(ge
     visit = db.query(Visit).filter(Visit.id == visit_id).first()
     if not visit:
         return RedirectResponse(url="/app", status_code=303)
+    settings = db.query(Settings).first()
     return templates.TemplateResponse(
         request=request,
         name="prescription.html",
-        context={"visit": visit, "patient": visit.patient},
+        context={"visit": visit, "patient": visit.patient, "settings": settings},
     )
 
 
@@ -231,3 +232,52 @@ def suggest(q: str = Query("")):
         return []
     matches = [s for s in COMMON_SYMPTOMS if s.startswith(query)]
     return matches[:10]  # Cap at 10 suggestions
+
+
+@app.get("/settings")
+def settings_page(request: Request, db: Session = Depends(get_db)):
+    """
+    Settings page — fetch or create default settings.
+    """
+    settings = db.query(Settings).first()
+    if not settings:
+        settings = Settings(clinic_name="", doctor_name="")
+        db.add(settings)
+        db.commit()
+    return templates.TemplateResponse(
+        request=request,
+        name="settings.html",
+        context={"settings": settings},
+    )
+
+
+@app.post("/settings")
+def save_settings(
+    clinic_name: str = Form(...),
+    doctor_name: str = Form(...),
+    degree: str = Form(""),
+    phone: str = Form(""),
+    address: str = Form(""),
+    db: Session = Depends(get_db),
+):
+    """
+    Save clinic settings — updates first record or creates new one.
+    """
+    settings = db.query(Settings).first()
+    if settings:
+        settings.clinic_name = clinic_name.strip()
+        settings.doctor_name = doctor_name.strip()
+        settings.degree = degree.strip() if degree else None
+        settings.phone = phone.strip() if phone else None
+        settings.address = address.strip() if address else None
+    else:
+        settings = Settings(
+            clinic_name=clinic_name.strip(),
+            doctor_name=doctor_name.strip(),
+            degree=degree.strip() if degree else None,
+            phone=phone.strip() if phone else None,
+            address=address.strip() if address else None,
+        )
+        db.add(settings)
+    db.commit()
+    return RedirectResponse(url="/settings", status_code=303)

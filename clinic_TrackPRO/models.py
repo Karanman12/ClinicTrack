@@ -55,3 +55,20 @@ class Visit(Base):
 
     def __repr__(self):
         return f"<Visit(id={self.id}, date='{self.visit_date}')>"
+
+
+class Settings(Base):
+    """Stores clinic configuration and doctor information."""
+
+    __tablename__ = "settings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    clinic_name = Column(String(150), nullable=False)
+    doctor_name = Column(String(100), nullable=False)
+    degree = Column(String(50), nullable=True)
+    phone = Column(String(15), nullable=True)
+    address = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"<Settings(id={self.id}, clinic='{self.clinic_name}')>"
