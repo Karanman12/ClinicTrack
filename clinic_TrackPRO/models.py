@@ -50,6 +50,7 @@ class Visit(Base):
     amount = Column(Integer, nullable=True)
     visit_type = Column(String(50), nullable=True)
     diagnosis = Column(String(200), nullable=True)
+    followup_date = Column(DateTime, nullable=True)
     visit_date = Column(DateTime, default=datetime.utcnow)
 
     # Back-reference to the parent patient

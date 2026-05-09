@@ -14,6 +14,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
+from datetime import datetime
 
 from database import engine, get_db, Base
 from models import Patient, Visit, Settings
@@ -140,12 +141,14 @@ def add_visit(
     notes: str = Form(""),
     visit_type: str = Form(""),
     diagnosis: str = Form(""),
+    followup_date: str = Form(""),
     amount: int = Form(0),
     db: Session = Depends(get_db),
 ):
     """
     Add a visit record for this patient, then redirect to their profile.
     """
+    followup_dt = datetime.strptime(followup_date, "%Y-%m-%d").date() if followup_date else None
     visit = Visit(
         patient_id=patient_id,
         symptoms=symptoms.strip(),
@@ -154,6 +157,7 @@ def add_visit(
         notes=notes.strip(),
         visit_type=visit_type.strip() if visit_type else None,
         amount=amount,
+        followup_date=followup_dt,
     )
     db.add(visit)
     db.commit()
@@ -194,6 +198,7 @@ def update_visit(
     notes: str = Form(""),
     visit_type: str = Form(""),
     diagnosis: str = Form(""),
+    followup_date: str = Form(""),
     amount: int = Form(0),
     db: Session = Depends(get_db),
 ):
@@ -202,12 +207,14 @@ def update_visit(
     """
     visit = db.query(Visit).filter(Visit.id == visit_id).first()
     if visit:
+        followup_dt = datetime.strptime(followup_date, "%Y-%m-%d").date() if followup_date else None
         visit.symptoms = symptoms.strip()
         visit.prescription = prescription.strip()
         visit.diagnosis = diagnosis.strip() if diagnosis else None
         visit.notes = notes.strip()
         visit.visit_type = visit_type.strip() if visit_type else None
         visit.amount = amount
+        visit.followup_date = followup_dt
         db.commit()
         return RedirectResponse(url=f"/app/patient/{visit.patient_id}", status_code=303)
     return RedirectResponse(url="/app", status_code=303)
