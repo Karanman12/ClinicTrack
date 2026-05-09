@@ -505,7 +505,7 @@
         if(nameInput && window.location.pathname === '/app') nameInput.focus();
 
         const symptomsInput = document.getElementById('symptoms');
-        if(symptomsInput && window.location.pathname !== '/app') {
+        if(symptomsInput) {
             symptomsInput.focus();
             initAutocomplete(symptomsInput);
         }
@@ -567,7 +567,12 @@
     // Autocomplete Logic
     // ---------------------------------------------------------
     let hideTimeout = null;
+    let autocompleteInitialized = new WeakSet();
+    
     function initAutocomplete(input) {
+        if (autocompleteInitialized.has(input)) return; // Prevent duplicate initialization
+        autocompleteInitialized.add(input);
+        
         const suggestBox = document.getElementById('suggestionBox');
         
         input.addEventListener('input', async (e) => {
@@ -595,6 +600,7 @@
                 suggestBox.classList.remove('hidden');
 
             } catch (err) {
+                console.error('Autocomplete error:', err);
                 suggestBox.classList.add('hidden');
             }
         });
@@ -613,6 +619,7 @@
         });
 
         input.addEventListener('blur', () => {
+            if (hideTimeout) clearTimeout(hideTimeout);
             hideTimeout = setTimeout(() => suggestBox.classList.add('hidden'), 200);
         });
         
