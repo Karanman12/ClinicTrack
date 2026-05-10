@@ -283,7 +283,10 @@
                         {% if selected_patient.visits %}
                             <div class="space-y-4">
                                 {% for v in selected_patient.visits %}
-                                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 hover:border-blue-200 transition-colors group">
+                                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 hover:border-blue-200 transition-colors group"
+                                     data-visit-type="{{ v.visit_type or '' }}"
+                                     data-diagnosis="{{ v.diagnosis or '' }}"
+                                     data-amount="{{ v.amount }}">
                                     <div class="flex justify-between items-start mb-3 border-b border-gray-100 pb-3">
                                         <div class="text-sm font-medium text-gray-900">{{ v.visit_date.strftime('%B %d, %Y') }} <span class="text-gray-400 font-normal ml-1">{{ v.visit_date.strftime('%I:%M %p') }}</span></div>
                                         <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -703,22 +706,56 @@
         const n = card.querySelector('.val-notes')?.innerText || '';
 
         // Extract follow-up date if it exists (it's in a div with calendar icon)
-        const followupEl = card.querySelector('span:contains("Please come back on:")')?.nextElementSibling;
-        const f = followupEl ? followupEl.innerText.trim() : '';
         // Simplified extraction for this template: find the text after "Please come back on:"
         const followUpText = card.innerHTML.match(/Please come back on:<\/span>\s*<span[^>]*>([^<]+)<\/span>/);
         const followUpDate = followUpText ? followUpText[1] : '';
 
+        // Get data attributes for fields not displayed in the card
+        const visitType = card.dataset.visitType || '';
+        const diagnosis = card.dataset.diagnosis || '';
+        const amount = card.dataset.amount || '';
+
         document.getElementById('symptoms').value = s;
         document.getElementById('prescription').value = p;
         document.getElementById('notes').value = n;
+        document.getElementById('visit_type').value = visitType;
+        document.getElementById('diagnosis').value = diagnosis;
+        document.getElementById('amount').value = amount;
 
-        // Attempt to set date input (expects YYYY-MM-DD)
-        // Since we stored it as '12 May 2026', we'd need a robust parser.
-        // For now, let's just try to find it or leave it empty for the user.
-        // To make it work perfectly, we should add a data-attribute to the HTML.
-        // Let's fix the HTML first and then the JS.
-        document.getElementById('followup_date').value = '';
+        // Convert date from "dd Month YYYY" to "YYYY-MM-DD" for the input field
+        if (followUpDate) {
+            try {
+                const parts = followUpDate.split(' ');
+                if (parts.length === 3) {
+                    const day = parts[0].padStart(2, '0');
+                    const monthStr = parts[1];
+                    const year = parts[2];
+
+                    const monthMap = {
+                        'January': '01', 'February': '02', 'March': '03', 'April': '04',
+                        'May': '05', 'June': '06', 'July': '07', 'August': '08',
+                        'September': '09', 'October': '10', 'November': '11', 'December': '12'
+                    };
+                    const month = monthMap[monthStr] || '01';
+
+                    document.getElementById('followup_date').value = `${year}-${month}-${day}`;
+                }
+            } catch (e) {
+                console.error('Error parsing follow-up date:', e);
+                document.getElementById('followup_date').value = '';
+            }
+        } else {
+            document.getElementById('followup_date').value = '';
+        }
+
+        // Trigger visit type change to update dynamic fields
+        const visitTypeSelect = document.getElementById('visit_type');
+        if (visitTypeSelect) {
+            visitTypeSelect.value = visitType;
+            // Dispatch change event to update dynamic field visibility
+            const event = new Event('change');
+            visitTypeSelect.dispatchEvent(event);
+        }
 
         const form = document.getElementById('visitForm');
         form.action = `/update_visit/${id}`;
@@ -735,19 +772,26 @@
     function clearVisitForm() {
         const form = document.getElementById('visitForm');
         form.reset();
-        
+
         // The URL needs patient_id, which we can extract from the current path
         const pid = window.location.pathname.split('/').pop();
         form.action = `/add_visit/${pid}`;
-        
+
         document.getElementById('submitBtnText').innerText = 'Save Visit';
         const submitBtn = form.querySelector('button[type="submit"]');
         submitBtn.classList.remove('bg-primary', 'hover:bg-blue-700', 'shadow-blue-200');
         submitBtn.classList.add('bg-secondary', 'hover:bg-green-700', 'shadow-green-200');
-        
+
         document.getElementById('clearBtn').style.display = 'none';
         document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
         document.querySelectorAll('p[id^="err-"]').forEach(el => el.classList.add('hidden'));
+
+        // Trigger visit type change to ensure fields are in correct state after reset
+        const visitTypeSelect = document.getElementById('visit_type');
+        if (visitTypeSelect) {
+            const event = new Event('change');
+            visitTypeSelect.dispatchEvent(event);
+        }
     }
 
     // ---------------------------------------------------------
