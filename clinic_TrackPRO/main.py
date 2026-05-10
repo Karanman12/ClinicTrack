@@ -150,7 +150,7 @@ def update_patient(
 def add_visit(
     patient_id: int,
     symptoms: str = Form(...),
-    prescription: str = Form(...),
+    prescription: str = Form(""),
     notes: str = Form(""),
     visit_type: str = Form(""),
     diagnosis: str = Form(""),
@@ -162,6 +162,10 @@ def add_visit(
     Add a visit record for this patient, then redirect to their profile.
     """
     followup_dt = datetime.strptime(followup_date, "%Y-%m-%d").date() if followup_date else None
+    
+    if visit_type == 'Follow-up' and not followup_dt:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=400, detail="Follow-up date is required for Follow-up visits")
     visit = Visit(
         patient_id=patient_id,
         symptoms=symptoms.strip(),
@@ -207,7 +211,7 @@ def delete_visit(visit_id: int, db: Session = Depends(get_db)):
 def update_visit(
     visit_id: int,
     symptoms: str = Form(...),
-    prescription: str = Form(...),
+    prescription: str = Form(""),
     notes: str = Form(""),
     visit_type: str = Form(""),
     diagnosis: str = Form(""),
@@ -221,6 +225,9 @@ def update_visit(
     visit = db.query(Visit).filter(Visit.id == visit_id).first()
     if visit:
         followup_dt = datetime.strptime(followup_date, "%Y-%m-%d").date() if followup_date else None
+        if visit_type == 'Follow-up' and not followup_dt:
+            from fastapi import HTTPException
+            raise HTTPException(status_code=400, detail="Follow-up date is required for Follow-up visits")
         visit.symptoms = symptoms.strip()
         visit.prescription = prescription.strip()
         visit.diagnosis = diagnosis.strip() if diagnosis else None

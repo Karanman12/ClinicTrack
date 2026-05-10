@@ -184,6 +184,24 @@
                                 <option value="Other" {% if selected_patient.gender == 'Other' %}selected{% endif %}>Other</option>
                             </select>
                         </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2" for="edit_blood_group">Blood Group</label>
+                            <select id="edit_blood_group" name="blood_group" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors">
+                                <option value="" {% if not selected_patient.blood_group %}selected{% endif %}>Select</option>
+                                <option value="A+" {% if selected_patient.blood_group == 'A+' %}selected{% endif %}>A+</option>
+                                <option value="A-" {% if selected_patient.blood_group == 'A-' %}selected{% endif %}>A-</option>
+                                <option value="B+" {% if selected_patient.blood_group == 'B+' %}selected{% endif %}>B+</option>
+                                <option value="B-" {% if selected_patient.blood_group == 'B-' %}selected{% endif %}>B-</option>
+                                <option value="AB+" {% if selected_patient.blood_group == 'AB+' %}selected{% endif %}>AB+</option>
+                                <option value="AB-" {% if selected_patient.blood_group == 'AB-' %}selected{% endif %}>AB-</option>
+                                <option value="O+" {% if selected_patient.blood_group == 'O+' %}selected{% endif %}>O+</option>
+                                <option value="O-" {% if selected_patient.blood_group == 'O-' %}selected{% endif %}>O-</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2" for="edit_allergies">Allergies</label>
+                            <input type="text" id="edit_allergies" name="allergies" value="{{ selected_patient.allergies or '' }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors" placeholder="e.g. Penicillin, Peanuts">
+                        </div>
                         <div class="md:col-span-2 flex justify-end gap-3 mt-2">
                             <button type="button" onclick="toggleEditPatient()" class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">Cancel</button>
                             <button type="submit" class="bg-primary hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium text-sm transition-colors shadow-sm shadow-blue-200">Save Changes</button>
@@ -203,6 +221,12 @@
                                 <button type="button" onclick="clearVisitForm()" class="text-xs text-gray-500 hover:text-gray-900" id="clearBtn" style="display:none;">Clear</button>
                             </div>
                             <form action="/add_visit/{{ selected_patient.id }}" method="post" id="visitForm" class="p-5 spa-form">
+                                {% if selected_patient.allergies %}
+                                <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2">
+                                    <span class="text-red-600 font-bold">⚠️</span>
+                                    <span class="text-red-700 text-sm font-medium">Patient is allergic to: {{ selected_patient.allergies }}</span>
+                                </div>
+                                {% endif %}
                                 <div class="mb-4">
                                     <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2" for="visit_type">Visit Type</label>
                                     <select id="visit_type" name="visit_type" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors">
@@ -336,12 +360,12 @@
                     <form action="/add_patient" method="post" class="spa-form" id="newPatientForm">
                         <div class="mb-4">
                             <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2" for="name">Full Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="name" name="name" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors" placeholder="e.g. Ramesh Kumar" autocomplete="off">
+                            <input type="text" id="name" name="name" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors" placeholder="e.g. Ramesh Kumar" autocomplete="off" required>
                             <p class="text-red-500 text-xs mt-1 hidden" id="err-name">Name is required.</p>
                         </div>
                         <div class="mb-4">
                             <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2" for="phone">Phone Number <span class="text-red-500">*</span></label>
-                            <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors" placeholder="e.g. 9876543210" autocomplete="off">
+                            <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-primary transition-colors" placeholder="e.g. 9876543210" autocomplete="off" required>
                             <p class="text-red-500 text-xs mt-1 hidden" id="err-phone">Phone is required.</p>
                         </div>
                         <div class="grid grid-cols-2 gap-4 mb-6">
@@ -425,7 +449,12 @@
             let firstInvalid = null;
             
             inputs.forEach(input => {
-                if(input.name === 'notes' || input.name === 'prescription' || input.name === 'amount') return; // optional
+                // Skip optional fields (those without 'required' attribute)
+                if(!input.hasAttribute('required')) return;
+                
+                // Skip hidden fields (relevant for dynamic visit forms)
+                if (input.closest('.mb-4')?.style.display === 'none' || input.closest('.grid')?.style.display === 'none') return;
+
                 const errEl = document.getElementById(`err-${input.id}`);
                 if (!input.value.trim()) {
                     isValid = false;
@@ -576,73 +605,80 @@
 
             visitTypeSelect.addEventListener('change', (e) => {
                 const type = e.target.value;
-                const sympField = document.getElementById('symptoms')?.closest('div');
-                const presField = document.getElementById('prescription')?.closest('div');
-                const notesField = document.getElementById('notes');
+                const form = visitTypeSelect.closest('form');
+                
+                // Fields
+                const sympField = document.getElementById('symptoms')?.closest('.mb-4');
+                const presField = document.getElementById('prescription')?.closest('.mb-4');
+                const diagField = document.getElementById('diagnosis')?.closest('.mb-4');
+                const followupField = document.getElementById('followup_date')?.closest('.mb-4');
+                const amountField = document.getElementById('amount')?.closest('.pt-2');
+                
                 const sympInput = document.getElementById('symptoms');
                 const presInput = document.getElementById('prescription');
-                const presLabel = document.querySelector('label[for="prescription"]');
-                const notesLabel = document.querySelector('label[for="notes"]');
+                const diagInput = document.getElementById('diagnosis');
+                const followupInput = document.getElementById('followup_date');
+                const amountInput = document.getElementById('amount');
+                
+                const sympLabel = form.querySelector('label[for="symptoms"]');
+                const presLabel = form.querySelector('label[for="prescription"]');
+                const diagLabel = form.querySelector('label[for="diagnosis"]');
+                const followupLabel = form.querySelector('label[for="followup_date"]');
+                const amountLabel = form.querySelector('label[for="amount"]');
 
-                // 1. Reset Defaults
-                if (sympField) sympField.style.display = 'block';
-                if (presField) presField.style.display = 'block';
-                if (sympInput) sympInput.placeholder = 'e.g. fever, cough...';
-                if (presInput) presInput.placeholder = 'Medicines and dosage...';
-                if (notesField) notesField.placeholder = 'Optional observations...';
-                if (presLabel) presLabel.innerText = 'Prescription';
-                if (notesLabel) notesLabel.innerText = 'Notes';
-                sympInput?.classList.remove('input-error');
-                presInput?.classList.remove('input-error');
-
-                // Remove any existing info-box
-                const existingBox = form.querySelector('.visit-type-info');
-                if (existingBox) existingBox.remove();
-
-                const addInfoBox = (text, colorClass) => {
-                    const box = document.createElement('div');
-                    box.className = `visit-type-info mb-4 p-2 px-3 text-xs rounded-lg font-medium text-white ${colorClass}`;
-                    box.innerText = text;
-                    form.prepend(box);
+                // Helper to reset a field
+                const setField = (input, label, isRequired, isHidden, labelText, placeholder) => {
+                    const container = input?.closest('.mb-4') || input?.closest('.pt-2');
+                    if (!container) return;
+                    
+                    container.style.display = isHidden ? 'none' : 'block';
+                    if (labelText && label) {
+                        const star = isRequired ? ' <span class="text-red-500">*</span>' : ' <span class="text-gray-400 font-normal normal-case">(optional)</span>';
+                        label.innerHTML = labelText + star;
+                    }
+                    if (placeholder && input) input.placeholder = placeholder;
+                    if (input) {
+                        if (isRequired) input.setAttribute('required', '');
+                        else input.removeAttribute('required');
+                        input.classList.remove('input-error');
+                        const err = document.getElementById(`err-${input.id}`);
+                        if (err) err.classList.add('hidden');
+                    }
                 };
 
-                if (type === 'Consultation') {
-                    // Use defaults
-                } else if (type === 'Follow-up') {
-                    if (sympField) sympField.style.display = 'none';
-                    if (notesLabel) notesLabel.innerText = 'Patient Progress';
-                    if (notesField) notesField.placeholder = 'How is patient feeling since last visit?';
-                    addInfoBox('Follow-up visit — document patient progress', 'bg-blue-500');
+                // Reset Defaults (Consultation mode)
+                setField(sympInput, sympLabel, true, false, 'Symptoms', 'e.g. fever, cough...');
+                setField(presInput, presLabel, true, false, 'Prescription', 'Medicines and dosage...');
+                setField(diagInput, diagLabel, false, false, 'Diagnosis', 'e.g. Viral Fever, Hypertension...');
+                setField(followupInput, followupLabel, false, false, 'Follow Up Date', '');
+                setField(amountInput, amountLabel, false, false, 'Consultation Fee', '0');
+
+                // Remove existing info-box
+                form.querySelector('.visit-type-info')?.remove();
+                const addInfo = (text, color) => {
+                    const box = document.createElement('div');
+                    box.className = `visit-type-info mb-4 p-2 px-3 text-xs rounded-lg font-medium text-white ${color}`;
+                    box.innerText = text;
+                    form.querySelector('.mb-4').insertAdjacentElement('afterend', box);
+                };
+
+                if (type === 'Follow-up') {
+                    setField(sympInput, sympLabel, false, true);
+                    setField(presInput, presLabel, false, false, 'Prescription', 'Update medications...');
+                    setField(followupInput, followupLabel, true, false, 'Follow Up Date', '');
+                    addInfo('Follow-up visit — document patient progress', 'bg-blue-500');
                 } else if (type === 'Check-up') {
-                    if (sympInput) {
-                        const label = document.querySelector('label[for="symptoms"]');
-                        if (label) label.innerHTML = 'Current Complaints (if any)';
-                    }
-                    if (presField) presField.style.display = 'none';
-                    if (notesLabel) notesLabel.innerText = 'Observations & Vitals';
-                    if (notesField) notesField.placeholder = 'BP, weight, general health observations...';
-                    addInfoBox('Routine check-up — no prescription needed', 'bg-green-500');
+                    setField(sympInput, sympLabel, false, false, 'Current Complaints', 'Any issues since last check-up?');
+                    setField(presInput, presLabel, false, true);
+                    addInfo('Routine check-up — no prescription needed', 'bg-green-500');
                 } else if (type === 'Emergency') {
-                    if (sympInput) {
-                        const label = document.querySelector('label[for="symptoms"]');
-                        if (label) label.innerHTML = 'Symptoms <span class="text-red-500">*</span>';
-                        sympInput.placeholder = 'Describe urgent symptoms...';
-                    }
-                    if (presInput) presInput.placeholder = 'Immediate treatment given...';
-                    sympInput?.classList.add('input-error');
-                    presInput?.classList.add('input-error');
-                    addInfoBox('Emergency visit — all details required', 'bg-red-500');
+                    setField(sympInput, sympLabel, true, false, 'Describe Urgent Symptoms', 'What is the emergency?');
+                    setField(presInput, presLabel, false, false, 'Immediate Treatment', 'Medicines given now...');
+                    addInfo('Emergency visit — focus on urgent care', 'bg-red-500');
                 } else if (type === 'Procedure') {
-                    if (sympInput) {
-                        const label = document.querySelector('label[for="symptoms"]');
-                        if (label) label.innerHTML = 'Symptoms (Optional)';
-                        sympInput.placeholder = 'Any complaints before procedure...';
-                    }
-                    if (presLabel) presLabel.innerText = 'Procedure Performed';
-                    if (presInput) presInput.placeholder = 'Describe procedure done...';
-                    if (notesLabel) notesLabel.innerText = 'Post-care Instructions';
-                    if (notesField) notesField.placeholder = 'Instructions given to patient...';
-                    addInfoBox('Procedure visit', 'bg-purple-500');
+                    setField(sympInput, sympLabel, false, false, 'Clinical History', 'Why is the procedure needed?');
+                    setField(presInput, presLabel, true, false, 'Procedure Details', 'Describe what was done...');
+                    addInfo('Medical procedure — document details', 'bg-purple-500');
                 }
             });
         }
