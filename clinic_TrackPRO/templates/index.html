@@ -288,7 +288,21 @@
                                      data-diagnosis="{{ v.diagnosis or '' }}"
                                      data-amount="{{ v.amount }}">
                                     <div class="flex justify-between items-start mb-3 border-b border-gray-100 pb-3">
-                                        <div class="text-sm font-medium text-gray-900">{{ v.visit_date.strftime('%B %d, %Y') }} <span class="text-gray-400 font-normal ml-1">{{ v.visit_date.strftime('%I:%M %p') }}</span></div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="text-sm font-medium text-gray-900">{{ v.visit_date.strftime('%B %d, %Y') }} <span class="text-gray-400 font-normal ml-1">{{ v.visit_date.strftime('%I:%M %p') }}</span></div>
+                                            {% set visit_type = v.visit_type or 'General' %}
+                                            {% set badge_colors = {
+                                                'General': 'bg-blue-100 text-blue-700 border-blue-200',
+                                                'Follow-up': 'bg-green-100 text-green-700 border-green-200',
+                                                'Emergency': 'bg-red-100 text-red-700 border-red-200',
+                                                'Check-up': 'bg-purple-100 text-purple-700 border-purple-200',
+                                                'Procedure': 'bg-orange-100 text-orange-700 border-orange-200'
+                                            } %}
+                                            {% set badge_class = badge_colors.get(visit_type, badge_colors['General']) %}
+                                            <span class="px-2 py-0.5 rounded text-xs font-semibold border {{ badge_class }}">
+                                                {{ visit_type }}
+                                            </span>
+                                        </div>
                                         <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <a href="/print_prescription/{{ v.id }}" target="_blank" class="text-gray-400 hover:text-green-600 transition-colors" title="Print Prescription">
                                                 <i data-feather="printer" class="w-4 h-4"></i>
