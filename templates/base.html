@@ -12,7 +12,9 @@
         .fade-in { animation: fadeIn 0.3s ease-in-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
+    <!-- Our override stylesheets AFTER Tailwind for proper cascade -->
     <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/design-system.css">
     {% block head %}{% endblock %}
 </head>
 <body class="flex h-screen overflow-hidden text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-900">
