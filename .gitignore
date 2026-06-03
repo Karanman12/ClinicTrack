@@ -4,5 +4,22 @@ dist/
 coverage/
 .DS_Store
 *.log
+
+# Environment files
 .env*
 !.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# VS Code
+.vscode/
