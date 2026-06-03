@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - ClinicTrack Pro{% endblock %}
+{% block header_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="space-y-6 fade-in">
+    <!-- Metrics Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all hover:scale-[1.02] duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                    <i data-feather="users"></i>
+                </div>
+            </div>
+            <h3 class="text-3xl font-bold text-slate-800 mb-1">{{ metrics.total_patients if metrics else 0 }}</h3>
+            <p class="text-sm text-slate-500 font-medium">Total Patients</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all hover:scale-[1.02] duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center">
+                    <i data-feather="clipboard"></i>
+                </div>
+            </div>
+            <h3 class="text-3xl font-bold text-slate-800 mb-1">{{ metrics.total_visits if metrics else 0 }}</h3>
+            <p class="text-sm text-slate-500 font-medium">Total Visits</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all hover:scale-[1.02] duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <i data-feather="calendar"></i>
+                </div>
+            </div>
+            <h3 class="text-3xl font-bold text-slate-800 mb-1">{{ metrics.todays_visits if metrics else 0 }}</h3>
+            <p class="text-sm text-slate-500 font-medium">Today's Visits</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all hover:scale-[1.02] duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                    <i data-feather="dollar-sign"></i>
+                </div>
+            </div>
+            <h3 class="text-3xl font-bold text-slate-800 mb-1">₹{{ "{:,.2f}".format(metrics.monthly_revenue) if metrics else "0.00" }}</h3>
+            <p class="text-sm text-slate-500 font-medium">Monthly Revenue</p>
+        </div>
+    </div>
+
+    <!-- Lists Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Recent Patients -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-white">
+                <h2 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                    <i data-feather="clock" class="w-5 h-5 text-slate-400"></i> Recent Patients
+                </h2>
+                <a href="/patients" class="text-sm font-medium text-blue-600 hover:text-blue-700">View all</a>
+            </div>
+            <div class="flex-1 p-0">
+                {% if metrics and metrics.recent_patients %}
+                    <ul class="divide-y divide-slate-100">
+                    {% for patient in metrics.recent_patients %}
+                        <li class="px-6 py-4 hover:bg-slate-50 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-sm">
+                                        {{ patient.name[0]|upper }}
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-slate-900">{{ patient.name }}</p>
+                                        <p class="text-xs text-slate-500">{{ patient.phone | default('No phone', true) }}</p>
+                                    </div>
+                                </div>
+                                <a href="/patients/{{ patient.id }}" class="text-slate-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-colors">
+                                    <i data-feather="chevron-right" class="w-5 h-5"></i>
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="h-48 flex flex-col items-center justify-center text-slate-400 px-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-3">
+                            <i data-feather="users" class="w-6 h-6 text-slate-300"></i>
+                        </div>
+                        <p class="text-sm font-medium text-slate-600">No patients yet</p>
+                        <p class="text-xs mt-1">Add a patient to see them here.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Upcoming Follow-ups -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-white">
+                <h2 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                    <i data-feather="calendar" class="w-5 h-5 text-slate-400"></i> Upcoming Follow-ups
+                </h2>
+            </div>
+            <div class="flex-1 p-0">
+                {% if metrics and metrics.upcoming_followups %}
+                    <ul class="divide-y divide-slate-100">
+                    {% for visit in metrics.upcoming_followups %}
+                        <li class="px-6 py-4 hover:bg-slate-50 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-slate-900">{{ visit.patient.name if visit.patient else 'Unknown Patient' }}</p>
+                                    <div class="flex items-center gap-2 mt-1 text-xs text-slate-500">
+                                        <span class="flex items-center gap-1"><i data-feather="calendar" class="w-3 h-3"></i> {{ visit.followup_date.strftime('%b %d, %Y') if visit.followup_date else '' }}</span>
+                                    </div>
+                                </div>
+                                <a href="/patients/{{ visit.patient_id }}" class="text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors">
+                                    View Patient
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="h-48 flex flex-col items-center justify-center text-slate-400 px-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mb-3">
+                            <i data-feather="check" class="w-6 h-6 text-emerald-400"></i>
+                        </div>
+                        <p class="text-sm font-medium text-slate-600">All caught up</p>
+                        <p class="text-xs mt-1">No upcoming follow-ups scheduled.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

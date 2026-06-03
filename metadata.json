@@ -1,0 +1,6 @@
+{
+  "name": "ClinicTrack Pro",
+  "description": "Patient analytics and practice management portal for clinicians.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

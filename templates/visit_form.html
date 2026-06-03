@@ -1,0 +1,407 @@
+{% extends "base.html" %}
+
+{% block title %}{% if visit %}Edit Visit{% else %}Add Visit{% endif %} - ClinicTrack Pro{% endblock %}
+{% block header_title %}
+<div class="flex items-center gap-3">
+    <a href="/patients/{{ patient.id }}" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors">
+        <i data-feather="arrow-left" class="w-5 h-5"></i>
+    </a>
+    <span>{% if visit %}Edit Visit for {{ patient.name }}{% else %}Record Visit for {{ patient.name }}{% endif %}</span>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl fade-in">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
+            <h2 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                <i data-feather="file-text" class="w-5 h-5 text-blue-600"></i> Clinic Encounter
+            </h2>
+        </div>
+        <form action="{% if visit %}/visits/{{ visit.id }}/edit{% else %}/patients/{{ patient.id }}/visits/new{% endif %}" method="post" class="p-6 space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Doctor Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Consulting Doctor</label>
+                    <select id="doctor_select" name="doctor_id" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors bg-white">
+                        <option value="">Select Doctor</option>
+                        {% for doctor in doctors %}
+                            <option value="{{ doctor.id }}" {% if visit and visit.doctor_id == doctor.id %}selected{% endif %}>Dr. {{ doctor.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Visit Type -->
+                <div id="visit_type_container">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Visit Type</label>
+                    <select id="visit_type_select" name="visit_type" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors bg-white">
+                        <option value="Consultation" {% if visit and visit.visit_type == 'Consultation' %}selected{% endif %}>Consultation</option>
+                        <option value="Follow-up" {% if visit and visit.visit_type == 'Follow-up' %}selected{% endif %}>Follow-up</option>
+                        <option value="Emergency" {% if visit and visit.visit_type == 'Emergency' %}selected{% endif %}>Emergency</option>
+                        <option value="Check-up" {% if visit and visit.visit_type == 'Check-up' %}selected{% endif %}>Check-up</option>
+                        <option value="Procedure" {% if visit and visit.visit_type == 'Procedure' %}selected{% endif %}>Procedure</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Vitals Section -->
+            <div class="border-t border-slate-100 pt-6">
+                <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Vitals</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Weight (kg)</label>
+                        <input id="weight_input" type="number" step="0.1" name="weight" value="{{ visit.weight if visit and visit.weight is not none else '' }}" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Blood Pressure</label>
+                        <input id="blood_pressure_input" type="text" name="blood_pressure" placeholder="120/80" value="{{ visit.blood_pressure if visit and visit.blood_pressure else '' }}" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Temperature (°F/C)</label>
+                        <input id="temperature_input" type="number" step="0.1" name="temperature" value="{{ visit.temperature if visit and visit.temperature is not none else '' }}" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clinical Assessment -->
+            <div class="border-t border-slate-100 pt-6 space-y-6">
+                <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">Clinical Assessment</h3>
+                
+                <div id="symptoms_container">
+                    <label id="symptoms_label" class="block text-sm font-medium text-slate-700 mb-2">Presenting Symptoms</label>
+                    <textarea id="symptoms_textarea" name="symptoms" rows="3" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors resize-none mb-2" placeholder="Describe symptoms or select macros below...">{{ visit.symptoms if visit and visit.symptoms else '' }}</textarea>
+                    <div id="symptoms_presets_wrapper" class="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Patient symptoms for visit type:</div>
+                        <div id="symptoms_presets" class="flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+
+                <div id="diagnosis_container">
+                    <label id="diagnosis_label" class="block text-sm font-medium text-slate-700 mb-2">Diagnosis</label>
+                    <input id="diagnosis_input" type="text" name="diagnosis" value="{{ visit.diagnosis if visit and visit.diagnosis else '' }}" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors mb-2" placeholder="Enter primary diagnosis or select below...">
+                    <div id="diagnosis_presets_wrapper" class="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Diagnosis macros for visit type:</div>
+                        <div id="diagnosis_presets" class="flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+
+                <div id="prescription_container">
+                    <label id="prescription_label" class="block text-sm font-medium text-slate-700 mb-2">Prescription & Plan</label>
+                    <textarea id="prescription_textarea" name="prescription" rows="5" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors resize-none mb-2" placeholder="Write prescription or select from macros...">{{ visit.prescription if visit and visit.prescription else '' }}</textarea>
+                    <div id="prescription_presets_wrapper" class="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Common prescriptions for visit type:</div>
+                        <div id="prescription_presets" class="flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Additional Notes</label>
+                    <textarea id="notes_textarea" name="notes" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors resize-none" placeholder="Any secondary details/general observations...">{{ visit.notes if visit and visit.notes else '' }}</textarea>
+                </div>
+            </div>
+
+            <!-- Billing & Flow -->
+            <div class="border-t border-slate-100 pt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div id="amount_container">
+                    <label id="amount_label" class="block text-sm font-medium text-slate-700 mb-2">Consultation Amount (₹)</label>
+                    <input id="amount_input" type="number" step="0.01" name="amount" value="{{ visit.amount if visit and visit.amount is not none else '0.00' }}" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors">
+                    <p class="text-[11px] text-slate-400 mt-1">Automatic matching fee populated.</p>
+                </div>
+                <div id="followup_container">
+                    <label id="followup_label" class="block text-sm font-medium text-slate-700 mb-2">Follow-up Date</label>
+                    <input id="followup_date_input" type="date" name="followup_date" value="{{ visit.followup_date.strftime('%Y-%m-%d') if visit and visit.followup_date else '' }}" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors">
+                    <p class="text-[11px] text-slate-400 mt-1">Recommended next appointment date.</p>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex justify-end gap-3">
+                <a href="/patients/{{ patient.id }}" class="px-6 py-2.5 rounded-xl text-sm font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">Cancel</a>
+                <button type="submit" class="px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm">Save Visit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const isEdit = {% if visit %}true{% else %}false{% endif %};
+    const visitTypeSelect = document.getElementById('visit_type_select');
+    const amountInput = document.getElementById('amount_input');
+    const followupDateInput = document.getElementById('followup_date_input');
+    
+    // Target Containers & Labels
+    const symptomsContainer = document.getElementById('symptoms_container');
+    const symptomsLabel = document.getElementById('symptoms_label');
+    const symptomsTextarea = document.getElementById('symptoms_textarea');
+
+    const diagnosisContainer = document.getElementById('diagnosis_container');
+    const diagnosisLabel = document.getElementById('diagnosis_label');
+    const diagnosisInput = document.getElementById('diagnosis_input');
+
+    const prescriptionContainer = document.getElementById('prescription_container');
+    const prescriptionLabel = document.getElementById('prescription_label');
+    const prescriptionTextarea = document.getElementById('prescription_textarea');
+
+    const amountContainer = document.getElementById('amount_container');
+    const amountLabel = document.getElementById('amount_label');
+
+    const followupContainer = document.getElementById('followup_container');
+    const followupLabel = document.getElementById('followup_label');
+
+    // Preset containers
+    const symptomsPresetsContainer = document.getElementById('symptoms_presets');
+    const diagnosisPresetsContainer = document.getElementById('diagnosis_presets');
+    const prescriptionPresetsContainer = document.getElementById('prescription_presets');
+
+    const presetsConfig = {
+        'Consultation': {
+            amount: 500.00,
+            followupDays: 7,
+            symptoms: ['Fever', 'Dry Cough', 'Throat Pain', 'Running Nose', 'Severe Headache', 'Body Fatigue', 'Shortness of breath'],
+            diagnoses: ['Acute Viral Fever', 'Upper Respiratory Tract Infection', 'Acute Tonsillitis', 'Migraine Episode', 'Gastroenteritis'],
+            prescriptions: [
+                'Tab. Paracetamol 650mg | 1-0-1 | After Food x 3 days',
+                'Tab. Cetirizine 10mg | 0-0-1 | At Bedtime x 5 days',
+                'Syp. Cough Relief 10ml | 1-1-1 | Three times daily x 5 days',
+                'Tab. Amoxicillin 500mg | 1-0-1 | Orally after meal x 5 days',
+                'Cap. Pantoprazole 40mg | 1-0-0 | Empty stomach/morning x 5 days'
+            ]
+        },
+        'Follow-up': {
+            amount: 200.00,
+            followupDays: 14,
+            symptoms: ['Improving health', 'Mild lingering cough', 'Slight fatigue', 'Stable vital signs', 'No new complains'],
+            diagnoses: ['Recovering from Viral Infection', 'Hypertension review: Stable', 'Diabetes review: Well managed', 'Acute Bronchitis resolving'],
+            prescriptions: [
+                'Continue previous medication for another 2 weeks',
+                'Taper Tab. Paracetamol to SOS (only in case of fever recurrence)',
+                'Tab. Vitamin C 500mg | 1-0-0 | Daily in morning x 10 days',
+                'Tab. Zincovit Multivitamin | 0-1-0 | Once daily x 15 days',
+                'Review blood biochemistry reports in next clinic visit'
+            ]
+        },
+        'Emergency': {
+            amount: 1000.00,
+            followupDays: 1,
+            symptoms: ['Acute breathlessness', 'Severe sharp central chest discomfort', 'High-grade fever with chills/shivering', 'Acute abdomen colic', 'Sudden allergic outbreak/hives'],
+            diagnoses: ['Suspected Acute Bronchospasm', 'Severe Hyperpyrexia', 'Acute Renal Colic', 'Anaphylactic allergic response', 'Hypertensive Urgency'],
+            prescriptions: [
+                'Emergency Nebulization with Duolin (Salbutamol+Ipratropium) STAT',
+                'Inj. Hydrocortisone 100mg IV STAT',
+                'Inj. Pantoprazole 40mg IV STAT',
+                'Tab. Avil (Pheniramine Maleate) 25mg STAT',
+                'ECG taken, immediate referral to tertiary hospital recommended'
+            ]
+        },
+        'Check-up': {
+            amount: 300.00,
+            followupDays: 30,
+            symptoms: ['Asymptomatic', 'General physical checkup', 'Routine diabetes/hypertension review', 'Pre-employment health assessment'],
+            diagnoses: ['Healthy Individual', 'Chronic Hypertension: Well controlled', 'Type 2 Diabetes: Stable', 'Routine wellness evaluation'],
+            prescriptions: [
+                'Continue active healthy lifestyle modifications',
+                'Tab. Calcium Carbonate + Vitamin D3 | 1-0-0 | Daily after food x 30 days',
+                'Resume regular morning brisk walk for 30-40 minutes',
+                'Advised lipid profile & fasting blood glucose testing next week'
+            ]
+        },
+        'Procedure': {
+            amount: 1500.00,
+            followupDays: 10,
+            symptoms: ['Knee joint stiffness', 'Laceration injury', 'Foreign body in eye / ear', 'Skin cyst', 'Needle biopsy required'],
+            diagnoses: ['Suturing performed', 'Cyst excision completed', 'Intra-articular injection given', 'Foreign body removed', 'Incision & Drainage done'],
+            prescriptions: [
+                'Tab. Ibuprofen 400mg | 1-0-1 | After Food x 3 days',
+                'Tab. Amoxicillin 500mg | 1-1-1 | After Food x 5 days',
+                'Apply Mupirocin ointment twice daily to the wound',
+                'Keep dressing clean and dry, review in 5 days for suture removal',
+                'Tab. Limcee 500mg | 1-0-0 | Daily in morning x 10 days'
+            ]
+        }
+    };
+
+    function getFutureDate(days) {
+        const d = new Date();
+        d.setDate(d.getDate() + days);
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function appendToField(element, text, separator = ', ') {
+        let currentVal = element.value.trim();
+        if (!currentVal) {
+            element.value = text;
+        } else {
+            // Avoid inserting identical duplicate text chunks
+            if (currentVal.toLowerCase().includes(text.toLowerCase())) {
+                return;
+            }
+            if (separator === '\n') {
+                element.value = currentVal + '\n' + text;
+            } else {
+                if (currentVal.endsWith(',') || currentVal.endsWith(';')) {
+                    element.value = currentVal + ' ' + text;
+                } else {
+                    element.value = currentVal + separator + text;
+                }
+            }
+        }
+        element.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    // Helper to dynamically set fields visibility and attributes
+    const setField = (container, label, isRequired, isHidden, labelText, placeholder) => {
+        if (!container) return;
+        
+        container.style.display = isHidden ? 'none' : 'block';
+        if (labelText && label) {
+            const star = isRequired ? ' <span class="text-red-500">*</span>' : ' <span class="text-slate-400 font-normal normal-case">(optional)</span>';
+            label.innerHTML = labelText + star;
+        }
+        
+        const input = container.querySelector('input, textarea, select');
+        if (input) {
+            if (placeholder) {
+                input.placeholder = placeholder;
+            }
+            if (isRequired) {
+                input.setAttribute('required', '');
+            } else {
+                input.removeAttribute('required');
+            }
+        }
+    };
+
+    const formElement = visitTypeSelect.closest('form');
+    function updateInfoBanner(text, bgClass, borderClass, textClass) {
+        const existing = formElement.querySelector('.visit-type-info');
+        if (existing) {
+            existing.remove();
+        }
+        if (text) {
+            const banner = document.createElement('div');
+            banner.className = `visit-type-info flex items-center gap-2 p-4 rounded-xl text-sm font-medium shadow-sm mb-6 border ${bgClass} ${borderClass} ${textClass}`;
+            banner.innerHTML = `<i data-feather="info" class="w-4 h-4 shrink-0"></i> <span>${text}</span>`;
+            
+            const refNode = document.getElementById('visit_type_container');
+            if (refNode) {
+                refNode.parentNode.insertAdjacentElement('afterend', banner);
+            } else {
+                formElement.prepend(banner);
+            }
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+        }
+    }
+
+    function populateSuggestions(visitType) {
+        const config = presetsConfig[visitType] || presetsConfig['Consultation'];
+        
+        // 1. Auto-fill numeric values & recommendations
+        amountInput.value = config.amount.toFixed(2);
+        followupDateInput.value = getFutureDate(config.followupDays);
+
+        applyDynamicFormBehavior(visitType);
+        generatePresetsOnly(visitType);
+    }
+
+    function applyDynamicFormBehavior(visitType) {
+        // Reset defaults
+        setField(symptomsContainer, symptomsLabel, true, false, 'Presenting Symptoms', 'Describe symptoms or select macros below...');
+        setField(prescriptionContainer, prescriptionLabel, true, false, 'Prescription & Plan', 'Write prescription or select from macros...');
+        setField(diagnosisContainer, diagnosisLabel, false, false, 'Diagnosis', 'Enter primary diagnosis or select below...');
+        setField(followupContainer, followupLabel, false, false, 'Follow-up Date', '');
+        setField(amountContainer, amountLabel, false, false, 'Consultation Amount (₹)', '');
+        updateInfoBanner(null);
+
+        if (visitType === 'Follow-up') {
+            setField(symptomsContainer, symptomsLabel, false, true);
+            setField(prescriptionContainer, prescriptionLabel, false, false, 'Prescription & Plan', 'Update medications...');
+            setField(followupContainer, followupLabel, true, false, 'Follow-up Date', '');
+            updateInfoBanner('Follow-up visit — document patient progress', 'bg-blue-50/50', 'border-blue-100', 'text-blue-800');
+        } else if (visitType === 'Check-up') {
+            setField(symptomsContainer, symptomsLabel, false, false, 'Current Complaints', 'Any issues since last check-up?');
+            setField(prescriptionContainer, prescriptionLabel, false, true);
+            updateInfoBanner('Routine check-up — no prescription needed', 'bg-emerald-50/50', 'border-emerald-100', 'text-emerald-800');
+        } else if (visitType === 'Emergency') {
+            setField(symptomsContainer, symptomsLabel, true, false, 'Describe Urgent Symptoms', 'What is the emergency?');
+            setField(prescriptionContainer, prescriptionLabel, false, false, 'Immediate Treatment', 'Medicines given now...');
+            updateInfoBanner('Emergency visit — focus on urgent care', 'bg-rose-50/50', 'border-rose-100', 'text-rose-800');
+        } else if (visitType === 'Procedure') {
+            setField(symptomsContainer, symptomsLabel, false, false, 'Clinical History', 'Why is the procedure needed?');
+            setField(prescriptionContainer, prescriptionLabel, true, false, 'Procedure Details', 'Describe what was done...');
+            updateInfoBanner('Medical procedure — document details', 'bg-purple-50/50', 'border-purple-100', 'text-purple-800');
+        }
+    }
+
+    function generatePresetsOnly(visitType) {
+        const config = presetsConfig[visitType] || presetsConfig['Consultation'];
+        
+        // 2. Clear previous presets HTML
+        symptomsPresetsContainer.innerHTML = '';
+        diagnosisPresetsContainer.innerHTML = '';
+        prescriptionPresetsContainer.innerHTML = '';
+
+        // 3. Generate Symptoms suggest badges
+        config.symptoms.forEach(sym => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-white text-slate-600 hover:bg-blue-50 hover:text-blue-600 border border-slate-200 transition-all cursor-pointer shadow-sm';
+            btn.innerHTML = `<i data-feather="plus" class="w-3.5 h-3.5 text-blue-500"></i> ${sym}`;
+            btn.addEventListener('click', () => {
+                appendToField(symptomsTextarea, sym, ', ');
+            });
+            symptomsPresetsContainer.appendChild(btn);
+        });
+
+        // 4. Generate Diagnosis suggest badges
+        config.diagnoses.forEach(diag => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-white text-slate-600 hover:bg-violet-50 hover:text-violet-600 border border-slate-200 transition-all cursor-pointer shadow-sm';
+            btn.innerHTML = `<i data-feather="plus" class="w-3.5 h-3.5 text-indigo-500"></i> ${diag}`;
+            btn.addEventListener('click', () => {
+                appendToField(diagnosisInput, diag, ', ');
+            });
+            diagnosisPresetsContainer.appendChild(btn);
+        });
+
+        // 5. Generate Prescription suggest badges
+        config.prescriptions.forEach(p => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-white text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 border border-slate-200 transition-all text-left cursor-pointer shadow-sm max-w-full truncate';
+            btn.innerHTML = `<i data-feather="plus" class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0"></i> <span class="truncate">${p}</span>`;
+            btn.title = p;
+            btn.addEventListener('click', () => {
+                appendToField(prescriptionTextarea, p, '\n');
+            });
+            prescriptionPresetsContainer.appendChild(btn);
+        });
+
+        // Re-run Feather to draw icons
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    }
+
+    // Capture changes to the visit type selector
+    visitTypeSelect.addEventListener('change', (e) => {
+        populateSuggestions(e.target.value);
+    });
+
+    // Populate suggestions initially depending on edit mode selection status
+    if (!isEdit) {
+        populateSuggestions(visitTypeSelect.value || 'Consultation');
+    } else {
+        applyDynamicFormBehavior(visitTypeSelect.value || 'Consultation');
+        generatePresetsOnly(visitTypeSelect.value || 'Consultation');
+    }
+});
+</script>
+{% endblock %}

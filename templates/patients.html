@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Patients - ClinicTrack Pro{% endblock %}
+{% block header_title %}Patients{% endblock %}
+
+{% block header_actions %}
+<a href="/patients/new" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 sm:py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors shadow-sm">
+    <i data-feather="plus" class="w-4 h-4"></i>
+    <span class="hidden sm:inline">Add Patient</span>
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="space-y-6 fade-in">
+    <!-- Search and Filters -->
+    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <form action="/patients" method="get" class="relative w-full max-w-md">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-feather="search" class="w-4 h-4 text-slate-400"></i>
+            </div>
+            <input type="text" name="search" value="{{ search or '' }}" placeholder="Search by name or phone..." class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-slate-50 focus:bg-white transition-colors" autocomplete="off">
+        </form>
+    </div>
+
+    <!-- Patients Table -->
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500 font-semibold">
+                        <th class="px-6 py-4">Patient Name</th>
+                        <th class="px-6 py-4">Contact</th>
+                        <th class="px-6 py-4 hidden md:table-cell">Details</th>
+                        <th class="px-6 py-4 hidden lg:table-cell">Added On</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                    {% if patients %}
+                        {% for pt in patients %}
+                        <tr class="hover:bg-slate-50 transition-colors group cursor-pointer" onclick="window.location.href='/patients/{{ pt.id }}'">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">
+                                        {{ pt.name[0]|upper }}
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-slate-900">{{ pt.name }}</div>
+                                        <div class="text-xs text-slate-500 md:hidden mt-0.5">{{ pt.phone }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-slate-600">
+                                {{ pt.phone | default('--', true) }}
+                            </td>
+                            <td class="px-6 py-4 hidden md:table-cell text-slate-600">
+                                {% if pt.age %}{{ pt.age }} yrs{% else %}--{% endif %} • {% if pt.gender %}{{ pt.gender }}{% else %}--{% endif %}
+                                {% if pt.blood_group %}
+                                    <span class="inline-block ml-2 px-2 py-0.5 rounded text-xs font-semibold bg-red-50 text-red-700 border border-red-100">{{ pt.blood_group }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 hidden lg:table-cell text-slate-500">
+                                {{ pt.created_at.strftime('%d %b %Y') if pt.created_at else '--' }}
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <a href="/patients/{{ pt.id }}" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" onclick="event.stopPropagation();">
+                                        <i data-feather="eye" class="w-4 h-4"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="px-6 py-20 text-center">
+                                <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-4">
+                                    <i data-feather="users" class="w-8 h-8 text-slate-300"></i>
+                                </div>
+                                <h3 class="text-base font-semibold text-slate-900 mb-1">No patients found</h3>
+                                <p class="text-sm text-slate-500 mb-6">{% if search %}Try adjusting your search query.{% else %}Get started by adding your first patient.{% endif %}</p>
+                                {% if not search %}
+                                <a href="/patients/new" class="inline-flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors shadow-sm">
+                                    <i data-feather="plus" class="w-4 h-4"></i> Add Patient
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
