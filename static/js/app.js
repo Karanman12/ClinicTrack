@@ -15,6 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Form Validation and Loading Indicators
     initFormInteractions();
+
+    // 5. Scroll-Triggered Animations
+    if (window.scrollAnimations) {
+        window.scrollAnimations.init();
+    }
 });
 
 /**
