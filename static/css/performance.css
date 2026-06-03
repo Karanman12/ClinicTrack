@@ -1,0 +1,320 @@
+/* ============================================================
+   ClinicTrack — Performance Optimization Layer
+   Ultra-smooth scrolling & animations, zero jank
+   ============================================================ */
+
+/* CRITICAL: Enable GPU acceleration globally */
+* {
+    -webkit-font-smoothing: antialiased;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-scroll-snap-type: none;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
+    will-change: scroll-position;
+}
+
+/* ============================================================
+   SCROLLING OPTIMIZATION - Ultra-smooth, no jank
+   ============================================================ */
+
+/* Enable passive event listeners for scroll */
+.scroll-container,
+main,
+.overflow-y-auto,
+[class*="overflow"] {
+    will-change: scroll-position;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Smooth scrollbar thumb animation */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+    will-change: background;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ============================================================
+   ANIMATION OPTIMIZATION - Transform only, no layout shifts
+   ============================================================ */
+
+/* Use transform instead of position changes */
+button,
+a,
+input,
+textarea,
+select {
+    transition-property: transform, background-color, box-shadow, color !important;
+    transition-duration: 150ms !important;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
+    will-change: transform;
+}
+
+/* Remove transitions on expensive properties */
+button:not(:hover):not(:active),
+a:not(:hover),
+input:not(:focus) {
+    transition: none !important;
+}
+
+/* Fast exit animations */
+button:active {
+    transition: all 100ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Optimize hover states - use transform only */
+button:hover {
+    transform: translateY(-2px) !important;
+    will-change: transform;
+}
+
+button:active {
+    transform: scale(0.95) !important;
+}
+
+/* ============================================================
+   TABLE OPTIMIZATION - Smooth row animations
+   ============================================================ */
+
+tbody tr {
+    will-change: background-color, transform;
+    transition: background-color 120ms ease, transform 120ms ease, box-shadow 120ms ease !important;
+}
+
+tbody tr:hover {
+    transform: translateY(-1px) !important;
+}
+
+/* Prevent expensive repaints on table cells */
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    will-change: auto;
+}
+
+/* ============================================================
+   CARD ANIMATIONS - GPU-accelerated hover effects
+   ============================================================ */
+
+.bg-white,
+[class*="card"],
+.rounded-2xl {
+    will-change: transform, box-shadow;
+    transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 150ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.bg-white:hover,
+[class*="card"]:hover,
+.rounded-2xl:hover {
+    transform: translateY(-2px) !important;
+    will-change: transform, box-shadow;
+}
+
+/* ============================================================
+   INPUT ANIMATIONS - Fast, responsive focus
+   ============================================================ */
+
+input,
+textarea,
+select {
+    will-change: border-color, box-shadow, background-color;
+    transition: border-color 120ms ease, 
+                box-shadow 120ms ease,
+                background-color 120ms ease !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    will-change: border-color, box-shadow;
+}
+
+/* ============================================================
+   SCROLL ANIMATIONS - Optimized Intersection Observer
+   ============================================================ */
+
+.scroll-fade-in,
+.scroll-slide-left,
+.scroll-slide-right,
+.scroll-scale {
+    will-change: opacity, transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Use minimal animations for better performance */
+.scroll-fade-in {
+    transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 500ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.scroll-slide-left,
+.scroll-slide-right {
+    transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 500ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.scroll-scale {
+    transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 500ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Instant completion state */
+.scroll-fade-in.in-view,
+.scroll-slide-left.in-view,
+.scroll-slide-right.in-view,
+.scroll-scale.in-view {
+    will-change: auto;
+}
+
+/* ============================================================
+   SIDEBAR OPTIMIZATION - Smooth navigation
+   ============================================================ */
+
+#sidebar,
+nav {
+    will-change: auto;
+}
+
+#sidebar a,
+nav a {
+    transition: background-color 120ms ease, color 120ms ease !important;
+    will-change: background-color;
+}
+
+#sidebar a:hover,
+nav a:hover {
+    will-change: background-color;
+}
+
+/* ============================================================
+   REDUCE MOTION - Respect user preferences
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ============================================================
+   PAINT & COMPOSITE OPTIMIZATION
+   ============================================================ */
+
+/* Prevent layout thrashing */
+img,
+[class*="icon"],
+svg {
+    will-change: auto;
+    backface-visibility: hidden;
+}
+
+/* Optimize heavy operations */
+.loader-overlay {
+    will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* ============================================================
+   PERFORMANCE MONITORING HINTS
+   ============================================================ */
+
+/* Mark critical rendering path elements */
+body {
+    contain: layout style paint;
+}
+
+main {
+    contain: layout style paint;
+}
+
+/* Isolate repaints */
+#sidebar {
+    contain: layout style paint;
+}
+
+table {
+    contain: strict;
+}
+
+/* ============================================================
+   MOBILE PERFORMANCE - Touch optimization
+   ============================================================ */
+
+@media (max-width: 768px) {
+    /* Reduce animations on mobile for better battery life */
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    button:hover {
+        transform: translateY(-1px) !important;
+    }
+    
+    /* Faster animations on mobile */
+    button,
+    a,
+    input {
+        transition-duration: 100ms !important;
+    }
+}
+
+/* ============================================================
+   FONT LOADING - Prevent layout shift
+   ============================================================ */
+
+@font-face {
+    font-display: swap;
+}
+
+body {
+    font-display: swap;
+}
+
+/* ============================================================
+   CRITICAL CSS - Fastest path to interactive
+   ============================================================ */
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+}
