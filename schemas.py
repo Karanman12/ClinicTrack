@@ -7,6 +7,8 @@ from datetime import datetime
 # ==========================================
 class ClinicSettingsBase(BaseModel):
     clinic_name: str
+    doctor_name: Optional[str] = None
+    phone: Optional[str] = None
     address: Optional[str] = None
     logo_url: Optional[str] = None
 

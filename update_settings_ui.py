@@ -1,22 +1,20 @@
-{% extends "base.html" %}
+import re
 
-{% block title %}Settings - ClinicTrack Pro{% endblock %}
+filepath = r'c:\Users\manda\OneDrive\Documents\Clinic_TrackPro\templates\settings.html'
+with open(filepath, 'r', encoding='utf-8') as f:
+    c = f.read()
 
-{% block header_title %}Settings{% endblock %}
-
-{% block content %}
-<div class="max-w-4xl space-y-8 fade-in">
-    <!-- Clinic Settings -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
-            <h2 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
-                <i data-feather="layout" class="w-5 h-5 text-blue-600"></i> Clinic Profile
-            </h2>
-            <p class="text-sm text-slate-500 mt-1">Update your clinic's display name and address for prescriptions.</p>
-        </div>
-        <form action="/settings/update" method="post" class="p-6 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+# 1. Update the clinic profile form inputs
+old_inputs = '''                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Clinic Name</label>
+                    <input type="text" name="clinic_name" value="{{ settings.clinic_name if settings else 'ClinicTrack Pro' }}" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors" required>
+                </div>
                 <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Logo URL (Optional)</label>
+                    <input type="url" name="logo_url" value="{{ settings.logo_url if settings else '' }}" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors" placeholder="https://...">
+                </div>'''
+
+new_inputs = '''                <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Clinic Name</label>
                     <input type="text" name="clinic_name" value="{{ settings.clinic_name if settings else 'ClinicTrack Pro' }}" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors" required>
                 </div>
@@ -28,61 +26,37 @@
                     <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
                     <input type="text" name="phone" value="{{ settings.phone if settings else '' }}" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors" placeholder="+1 234 567 8900">
                 </div>
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Clinic Address</label>
-                    <textarea name="address" rows="3" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors resize-none">{{ settings.address if settings else '' }}</textarea>
-                </div>
-            </div>
-            <div class="flex justify-end">
-                <button type="submit" class="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors shadow-sm">Save Clinic Details</button>
-            </div>
-        </form>
-    </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Logo URL (Optional)</label>
+                    <input type="url" name="logo_url" value="{{ settings.logo_url if settings else '' }}" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors" placeholder="https://...">
+                </div>'''
 
-    <!-- Doctors Settings -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
-                    <i data-feather="users" class="w-5 h-5 text-indigo-600"></i> Doctors
-                </h2>
-                <p class="text-sm text-slate-500 mt-1">Manage doctors available for assignments.</p>
-            </div>
-            <button onclick="document.getElementById('addDoctorModal').classList.remove('hidden')" type="button" class="inline-flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors shadow-sm">
+c = c.replace(old_inputs, new_inputs)
+
+# 2. Add onclick to Add Doctor button
+old_btn = '''<button class="inline-flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors shadow-sm">
                 <i data-feather="user-plus" class="w-4 h-4"></i> Add Doctor
-            </button>
-        </div>
-        <div class="p-6">
-            {% if doctors %}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {% for doc in doctors %}
-                    <div class="border border-slate-200 rounded-xl p-4 flex items-center justify-between hover:border-slate-300 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold">
-                                {{ doc.name[0]|upper }}
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-slate-900">Dr. {{ doc.name }}</h4>
-                                <p class="text-xs text-slate-500">{{ doc.degree or 'N/A' }} • {{ doc.specialization or 'General' }}</p>
-                            </div>
-                        </div>
-                        <form action="/settings/doctors/{{ doc.id }}/delete" method="post" class="inline">
+            </button>'''
+
+new_btn = '''<button onclick="document.getElementById('addDoctorModal').classList.remove('hidden')" type="button" class="inline-flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors shadow-sm">
+                <i data-feather="user-plus" class="w-4 h-4"></i> Add Doctor
+            </button>'''
+
+c = c.replace(old_btn, new_btn)
+
+# 3. Fix delete doctor button
+old_del = '''<button class="text-slate-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-colors" title="Remove">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>'''
+new_del = '''<form action="/settings/doctors/{{ doc.id }}/delete" method="post" class="inline">
                             <button type="submit" class="text-slate-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-colors" title="Remove" onclick="return confirm('Are you sure you want to remove this doctor?');">
                                 <i data-feather="trash-2" class="w-4 h-4"></i>
                             </button>
-                        </form>
-                    </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="text-center py-8">
-                    <p class="text-sm text-slate-500">No doctors added yet.</p>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-</div>
+                        </form>'''
+c = c.replace(old_del, new_del)
 
+# 4. Add the modal at the bottom before {% endblock %}
+modal_html = '''
 <!-- Add Doctor Modal -->
 <div id="addDoctorModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex justify-center items-center">
     <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl p-6 mx-4">
@@ -116,4 +90,12 @@
         </form>
     </div>
 </div>
-{% endblock %}
+'''
+
+if 'id="addDoctorModal"' not in c:
+    c = c.replace('{% endblock %}', modal_html + '\n{% endblock %}')
+
+with open(filepath, 'w', encoding='utf-8') as f:
+    f.write(c)
+
+print('Updated settings.html')
