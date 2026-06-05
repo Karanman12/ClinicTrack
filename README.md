@@ -23,14 +23,14 @@ A fast, responsive, and production-ready clinic management platform for doctors 
 
 > Add more screenshots below as the project grows.
 > ### Dashboard
-(<img width="1919" height="1010" alt="dashboard png" src="https://github.com/user-attachments/assets/73eb0915-fccf-4f33-acf6-6a7c33d3e02e" />
-)
+<img width="1919" height="1010" alt="dashboard png" src="https://github.com/user-attachments/assets/73eb0915-fccf-4f33-acf6-6a7c33d3e02e" />
+
 ### Patient Management
-(<img width="1919" height="1018" alt="patient-list png" src="https://github.com/user-attachments/assets/6bfaec6c-542f-4e11-a946-1e245906743c" />
-)
+<img width="1919" height="1018" alt="patient-list png" src="https://github.com/user-attachments/assets/6bfaec6c-542f-4e11-a946-1e245906743c" />
+
 ### Prescription View
-(<img width="1919" height="1018" alt="prescription png" src="https://github.com/user-attachments/assets/c4c8e906-9626-4ef6-b39b-c56744200012" />
-)
+<img width="1919" height="1018" alt="prescription png" src="https://github.com/user-attachments/assets/c4c8e906-9626-4ef6-b39b-c56744200012" />
+
 
 ## 📖 Overview
 
