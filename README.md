@@ -1,110 +1,211 @@
 <div align="center">
-  <img src="https://via.placeholder.com/100x100?text=CT" alt="ClinicTrack Pro Logo" width="80" height="80">
-  <h1>ClinicTrack Pro</h1>
-  <p><b>A modern, fast, and feature-rich Clinic Management System for efficient healthcare operations.</b></p>
+
+# 🏥 ClinicTrack Pro
+
+### Modern Clinic Management System Built with FastAPI
+
+A fast, responsive, and production-ready clinic management platform for doctors and healthcare professionals.
+
+[![Live Demo](https://img.shields.io/badge/Live-Demo-success?style=for-the-badge)](https://clinictrack-yd9s.onrender.com/)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge)]()
+[![FastAPI](https://img.shields.io/badge/FastAPI-Framework-green?style=for-the-badge)]()
+[![Render](https://img.shields.io/badge/Hosted_on-Render-purple?style=for-the-badge)]()
+
+🌐 **Live Application:** https://clinictrack-yd9s.onrender.com/
+
 </div>
 
 ---
 
-## 📖 Project Overview
+## 📸 Project Preview
 
-ClinicTrack Pro is a production-ready Web Application designed to streamline clinical workflows, patient management, and prescription generation. Built with a robust **FastAPI** backend and a responsive, beautifully crafted **Tailwind CSS / Vanilla JS** frontend, it ensures a frictionless experience for doctors and clinic administrators.
+![ClinicTrack Pro Hero](https://github.com/user-attachments/assets/d57ad88e-9047-4199-b4b8-3771a126c620)
 
-It completely abandons clunky, legacy medical software interfaces in favor of a clean, modern SaaS-style aesthetic featuring optimized SQL queries, dynamic dashboards, and PDF-ready prescriptions.
+> Add more screenshots below as the project grows.
 
-## ✨ Features
+---
 
-- **📊 Dynamic Dashboard:** Instantly view daily visits, total patients, monthly revenue, and upcoming follow-ups.
-- **👩‍⚕️ Patient Management:** Quickly onboard, search, and manage comprehensive patient profiles including medical history and vitals.
-- **🩺 Visit Tracking:** Document symptoms, diagnoses, prescriptions, and follow-up dates on a structured clinical timeline.
-- **🖨️ Prescription Printing/PDF Export:** Professional, print-ready prescription formatting with customizable clinic branding.
-- **⚡ Lightning Fast Search:** Client-side instant filtering across patient databases.
-- **🏥 Multi-Doctor Support:** Setup separate profiles, specializations, and mapping for larger clinics.
+## 📖 Overview
 
-## 📸 Screenshots
+ClinicTrack Pro is a modern clinic management web application designed to simplify patient management, visit tracking, and prescription generation.
 
-| Dashboard | Patient Profile |
-| --------- | --------------- |
-| *[Insert Dashboard Screenshot Here]* | *[Insert Patient Profile Screenshot Here]* |
+The project focuses on delivering a clean SaaS-style user experience while maintaining fast performance and scalable backend architecture.
 
-| Settings | Prescription Slip & Print View |
-| -------- | ------------------------------ |
-| *[Insert Settings Screenshot Here]* | *[Insert Prescription Screenshot Here]* |
+Built using FastAPI, SQLAlchemy, Jinja2, Tailwind CSS, and JavaScript, the application helps healthcare professionals manage their daily operations efficiently.
 
-## 🛠️ Tech Stack
+---
 
-**Backend:**
-- **Python 3.11+**
-- **FastAPI** (High-performance API framework)
-- **SQLAlchemy** (ORM)
-- **PostgreSQL** (Relational Database)
-- **Uvicorn** (ASGI Server)
+## ✨ Key Features
 
-**Frontend:**
-- **Jinja2** (Server-side templating)
-- **Tailwind CSS** (Utility-first styling)
-- **Vanilla JavaScript** (Lightweight DOM bindings & interactions)
-- **Feather Icons** (Clean vector icons)
+### 👨‍⚕️ Patient Management
 
-**Deployment:**
-- **Render** (Fully managed PaaS)
+* Add, edit, and manage patient records
+* Store demographic and medical information
+* Fast patient search functionality
 
-## 🚀 Installation & Local Setup
+### 🩺 Visit Tracking
 
-### Prerequisites
-- Python 3.11+
-- PostgreSQL server running locally
+* Record consultations and diagnoses
+* Maintain complete visit history
+* Follow-up tracking
 
-### 1. Clone the Repository
+### 📄 Prescription Management
+
+* Generate professional prescriptions
+* Print-friendly prescription layouts
+* Clinic branding support
+
+### 📊 Dashboard & Analytics
+
+* Patient statistics
+* Visit summaries
+* Quick clinic insights
+
+### ⚡ Performance Focused
+
+* FastAPI backend
+* Optimized SQLAlchemy queries
+* Responsive user interface
+
+### 🎨 Modern UI
+
+* Tailwind CSS design system
+* Mobile-friendly layout
+* Clean and intuitive workflow
+
+---
+
+## 🛠️ Technology Stack
+
+### Backend
+
+* Python 3.11+
+* FastAPI
+* SQLAlchemy
+* Uvicorn
+
+### Frontend
+
+* Jinja2 Templates
+* Tailwind CSS
+* Vanilla JavaScript
+* Feather Icons
+
+### Database
+
+* SQLite (Current)
+* PostgreSQL (Planned Production Upgrade)
+
+### Deployment
+
+* GitHub
+* Render
+
+---
+
+## 🚀 Live Demo
+
+Try the application here:
+
+### 🌐 https://clinictrack-yd9s.onrender.com/
+
+---
+
+## 💻 Local Development
+
+### Clone Repository
+
 ```bash
-git clone https://github.com/yourusername/clinictrack-pro.git
-cd clinictrack-pro
+git clone [https://github.com/YOUR_USERNAM](https://github.com/Karanman12)/ClinicTrack-Pro.git
+cd ClinicTrack-Pro
 ```
 
-### 2. Set Up Virtual Environment
+### Create Virtual Environment
+
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
 ```
 
-### 3. Install Dependencies
+### Activate Environment
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Linux / Mac:
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Database Configuration
-Create a PostgreSQL database (e.g., `clinictrack_pro`).
-Copy the environment example file and update it with your database credentials:
-```bash
-cp .env.example .env
-```
-Ensure your `.env` contains the correct PostgreSQL URL:
-```env
-DATABASE_URL=postgresql://user:password@localhost:5432/clinictrack_pro
-```
+### Run Application
 
-### 5. Run the Application
 ```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 3000
 ```
-Open **http://localhost:3000** in your browser.
 
-## ☁️ Deployment (Render)
+Open:
 
-This project includes a `render.yaml` configuration file for zero-config deployments on Render.
-
-1. Fork or push this repository to your GitHub account.
-2. Log in to [Render](https://render.com).
-3. Go to your Dashboard and click **New+** -> **Blueprint**.
-4. Connect your GitHub repository.
-5. Render will automatically detect the `render.yaml` and provision both the **Web Service** and the **PostgreSQL Database**. No manual environment variable setup is required.
-
-## 🔮 Future Enhancements
-
-- Expand PDF generation using WeasyPrint for bulk history exports.
-- Multi-tenant role-based access control (Admin, Doctor, Receptionist).
-- Automated SMS/Email reminders for upcoming follow-ups.
-- Appointment scheduling calendar view.
+```text
+http://localhost:3000
+```
 
 ---
-*Developed with a focus on code quality, scalability, and UX design.*
+
+## 📈 Highlights
+
+* Full-Stack FastAPI Application
+* Real-world Healthcare Management System
+* Responsive SaaS-style User Interface
+* SQLAlchemy ORM Integration
+* Render Cloud Deployment
+* GitHub CI/CD Workflow
+* Portfolio-Ready Production Project
+
+---
+
+## 🔮 Future Roadmap
+
+* Authentication & Authorization
+* Multi-Doctor Support
+* Appointment Scheduling
+* PostgreSQL Migration
+* PDF Report Generation
+* Email/SMS Notifications
+* Advanced Analytics Dashboard
+* Role-Based Access Control
+
+---
+
+## 🌟 Why This Project?
+
+ClinicTrack Pro was developed to demonstrate:
+
+* Backend Development with FastAPI
+* Database Design & ORM Usage
+* Full-Stack Application Architecture
+* UI/UX Design Principles
+* Cloud Deployment Practices
+* Real-World Business Workflow Automation
+
+---
+
+## 👨‍💻 Developer
+
+**Karan Mandal**
+
+BCA Student | Python Developer | FastAPI Enthusiast
+
+Focused on building practical software solutions and modern web applications.
+
+---
+
+⭐ If you found this project interesting, consider giving it a star.
