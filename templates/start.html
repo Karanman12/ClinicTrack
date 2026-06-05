@@ -28,24 +28,24 @@
 
             /* Ghost button / outline button */
             --btn-ghost-bg: transparent;
-            --btn-ghost-text: #2B4560;
-            --btn-ghost-border: #CBE0F5;
-            --btn-ghost-hover: #E7F2FA;
+            --btn-ghost-text: #111111;
+            --btn-ghost-border: #D1D0CB;
+            --btn-ghost-hover: #E8E7E3;
 
             /* Heading text color - Deep slate/navy */
-            --text-heading: #0D1E30;
+            --text-heading: #111111;
 
             /* Body text color - Slate blue */
-            --text-body: #344A63;
+            --text-body: #3A3A3A;
 
             /* Muted / secondary text - Lighter slate */
-            --text-muted: #647B95;
+            --text-muted: #6B6A66;
 
             /* Link color */
             --text-link: #4A9DE4;
 
             /* Border color - Soft cool border */
-            --border: #D3E2F0;
+            --border: #E8E7E3;
 
             /* Badge background + text - Derived from warm gold ribbon */
             --badge-bg: #FFF8E7;
@@ -53,7 +53,7 @@
 
             /* Input field background + border */
             --input-bg: #FFFFFF;
-            --input-border: #CBE0F5;
+            --input-border: #E8E7E3;
 
             /* State Colors */
             --state-success: #3A9679;
@@ -61,7 +61,7 @@
             --state-danger: #D8636E;
 
             /* Footer background */
-            --bg-footer: #E8F1F9;
+            --bg-footer: #F4F8FC;
         }
 
         body {
@@ -91,7 +91,7 @@
         /* Enhanced hover effects */
         .btn-primary-hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(74, 157, 228, 0.25), 0 8px 10px -6px rgba(74, 157, 228, 0.25);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
 
         .btn-secondary-hover {
@@ -101,7 +101,7 @@
 
         .feature-card-hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
         }
 
         /* Smooth transitions */
@@ -295,7 +295,7 @@
 
         <!-- CTA Buttons / Portal Navigation Grid -->
         <div class="slide-up flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto mb-16" style="transition-delay: 0.55s;">
-            <a href="/dashboard" class="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-primary hover:bg-primary-hover text-surface px-8 py-4 rounded-full font-semibold text-[16px] transition-all duration-300 shadow-xl shadow-primary/20 hover:btn-primary-hover">
+            <a href="/dashboard" class="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-primary hover:bg-primary-hover text-surface px-8 py-4 rounded-full font-semibold text-[16px] transition-all duration-300 shadow-xl shadow-black/10 hover:btn-primary-hover">
                 <i data-feather="grid" class="w-5 h-5"></i>
                 <span>Enter Workspace Dashboard</span>
             </a>
@@ -341,7 +341,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Feature 1: Dynamic Dashboard -->
             <div style="transition-delay: 0.1s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
-                <div class="w-14 h-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                <div class="w-14 h-14 rounded-xl bg-black/5 text-black flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                     <i data-feather="bar-chart-2" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Dynamic Dashboard</h3>
@@ -352,7 +352,7 @@
 
             <!-- Feature 2: Patient Directory -->
             <div style="transition-delay: 0.2s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
-                <div class="w-14 h-14 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center mb-6 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
+                <div class="w-14 h-14 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="users" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Patient Directory</h3>
@@ -363,7 +363,7 @@
 
             <!-- Feature 3: Clinical Encounters -->
             <div style="transition-delay: 0.3s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
-                <div class="w-14 h-14 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                <div class="w-14 h-14 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center mb-6 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="activity" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Clinical Encounters</h3>
@@ -374,7 +374,7 @@
 
             <!-- Feature 4: Printable Prescriptions -->
             <div style="transition-delay: 0.1s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
-                <div class="w-14 h-14 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:bg-purple-500 group-hover:text-white transition-all duration-300">
+                <div class="w-14 h-14 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="printer" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Printable Prescriptions</h3>
@@ -385,7 +385,7 @@
 
             <!-- Feature 5: Multi-Doctor Settings -->
             <div class="bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
-                <div class="w-14 h-14 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center mb-6 group-hover:bg-teal-500 group-hover:text-white transition-all duration-300">
+                <div class="w-14 h-14 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:bg-purple-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="settings" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Multi-Doctor Setup</h3>
@@ -396,7 +396,7 @@
 
             <!-- Feature 6: Secure Storage -->
             <div style="transition-delay: 0.3s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
-                <div class="w-14 h-14 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center mb-6 group-hover:bg-red-500 group-hover:text-white transition-all duration-300">
+                <div class="w-14 h-14 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center mb-6 group-hover:bg-teal-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="database" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Secure Storage</h3>
@@ -437,8 +437,8 @@
             </div>
 
             <!-- Plan 2 -->
-            <div style="transition-delay: 0.3s;" class="slide-up bg-white rounded-2xl p-8 border-2 border-primary shadow-lg flex flex-col relative card-hover transition-all hover:shadow-xl scale-[1.02]">
-                <div class="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+            <div style="transition-delay: 0.3s;" class="slide-up bg-white rounded-2xl p-8 border-2 border-[#4A9DE4] shadow-lg flex flex-col relative card-hover transition-all hover:shadow-xl scale-[1.02]">
+                <div class="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-[#4A9DE4] to-[#2B609E] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
                     Most Popular
                 </div>
                 <h3 class="text-lg font-bold text-heading">Clinic Track Pro</h3>
@@ -453,7 +453,7 @@
                     <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-success"></i> Pro script customization</li>
                     <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-success"></i> Advanced Patient filtering</li>
                 </ul>
-                <a href="/dashboard" class="block text-center py-3 px-6 rounded-xl bg-primary hover:bg-primary-hover text-white font-medium transition-all shadow-md shadow-primary/20 hover:btn-primary-hover">
+                <a href="/dashboard" class="block text-center py-3 px-6 rounded-xl bg-primary hover:bg-primary-hover text-white font-medium transition-all shadow-md shadow-black/10 hover:btn-primary-hover">
                     Get Started Pro
                 </a>
             </div>
@@ -471,7 +471,7 @@
 
         <div class="space-y-4">
             <!-- Accordion 1 -->
-            <div style="transition-delay: 0.1s;" class="slide-up border border-borderLine rounded-2xl overflow-hidden bg-page transition-all hover:border-primary/30">
+            <div style="transition-delay: 0.1s;" class="slide-up border border-borderLine rounded-2xl overflow-hidden bg-page transition-all hover:border-blue-400/40">
                 <button class="w-full px-6 py-5 text-left font-semibold text-heading flex items-center justify-between select-none focus:outline-none group" onclick="toggleAccordion(1)">
                     <span>Is the patient personal details entirely secure?</span>
                     <i data-feather="chevron-down" id="icon-1" class="w-5 h-5 transition-transform duration-300 group-hover:text-primary"></i>
@@ -484,7 +484,7 @@
             </div>
 
             <!-- Accordion 2 -->
-            <div style="transition-delay: 0.2s;" class="slide-up border border-borderLine rounded-2xl overflow-hidden bg-page transition-all hover:border-primary/30">
+            <div style="transition-delay: 0.2s;" class="slide-up border border-borderLine rounded-2xl overflow-hidden bg-page transition-all hover:border-blue-400/40">
                 <button class="w-full px-6 py-5 text-left font-semibold text-heading flex items-center justify-between select-none focus:outline-none group" onclick="toggleAccordion(2)">
                     <span>Can we print prescription receipts instantly?</span>
                     <i data-feather="chevron-down" id="icon-2" class="w-5 h-5 transition-transform duration-300 group-hover:text-primary"></i>
@@ -497,7 +497,7 @@
             </div>
 
             <!-- Accordion 3 -->
-            <div style="transition-delay: 0.3s;" class="slide-up border border-borderLine rounded-2xl overflow-hidden bg-page transition-all hover:border-primary/30">
+            <div style="transition-delay: 0.3s;" class="slide-up border border-borderLine rounded-2xl overflow-hidden bg-page transition-all hover:border-blue-400/40">
                 <button class="w-full px-6 py-5 text-left font-semibold text-heading flex items-center justify-between select-none focus:outline-none group" onclick="toggleAccordion(3)">
                     <span>Is it easy to configure multiple doctors for larger clinical settings?</span>
                     <i data-feather="chevron-down" id="icon-3" class="w-5 h-5 transition-transform duration-300 group-hover:text-primary"></i>
@@ -541,18 +541,18 @@
                 <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
                     <div>
                         <label class="block text-sm font-semibold text-heading mb-2">Practice Name</label>
-                        <input type="text" required placeholder="e.g. CareMax Clinic" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-primary bg-inputBg transition-colors form-input" />
+                        <input type="text" required placeholder="e.g. CareMax Clinic" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-blue-500 bg-inputBg transition-colors form-input" />
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-heading mb-2">Email Address</label>
-                        <input type="email" required placeholder="e.g. doctor@caremax.com" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-primary bg-inputBg transition-colors form-input" />
+                        <input type="email" required placeholder="e.g. doctor@caremax.com" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-blue-500 bg-inputBg transition-colors form-input" />
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-heading mb-2">Message</label>
-                        <textarea required rows="4" placeholder="How can we assist your clinical practice?" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-primary bg-inputBg transition-colors resize-none form-input"></textarea>
+                        <textarea required rows="4" placeholder="How can we assist your clinical practice?" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-blue-500 bg-inputBg transition-colors resize-none form-input"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full py-4 text-center rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold transition-all shadow-md shadow-primary/25 hover:btn-primary-hover">
+                    <button type="submit" class="w-full py-4 text-center rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold transition-all shadow-md shadow-black/10 hover:btn-primary-hover">
                         Submit Inquiry
                     </button>
 

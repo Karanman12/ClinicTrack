@@ -9,6 +9,8 @@ class ClinicSettings(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     clinic_name = Column(String(150), nullable=False, default="ClinicTrack Pro")
+    doctor_name = Column(String(150), nullable=True)
+    phone = Column(String(50), nullable=True)
     address = Column(Text, nullable=True)
     logo_url = Column(String(500), nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)

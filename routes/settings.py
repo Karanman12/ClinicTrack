@@ -21,12 +21,16 @@ async def view_settings(request: Request, db: Session = Depends(get_db)):
 async def update_settings(
     request: Request,
     clinic_name: str = Form(...),
+    doctor_name: Optional[str] = Form(None),
+    phone: Optional[str] = Form(None),
     address: Optional[str] = Form(None),
     logo_url: Optional[str] = Form(None),
     db: Session = Depends(get_db)
 ):
     settings_data = schemas.ClinicSettingsBase(
         clinic_name=clinic_name,
+        doctor_name=doctor_name,
+        phone=phone,
         address=address,
         logo_url=logo_url
     )
