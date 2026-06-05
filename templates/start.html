@@ -6,71 +6,166 @@
     <title>ClinicTrack Pro — Patient Management Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
-    
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
-        
+
         :root {
             /* Page background - airy and light, cool blue undertone */
-            --bg-page: #F4F8FC; 
-            
+            --bg-page: #F4F8FC;
+
             /* Card / section surface */
             --bg-surface: #FFFFFF;
-            
+
             /* Navbar background - translucent page color */
             --bg-navbar: rgba(244, 248, 252, 0.85);
-            
+
             /* Primary button (filled) - Derived from vibrant blue ribbon */
-            --btn-primary: #4A9DE4; 
-            
+            --btn-primary: #4A9DE4;
+
             /* Primary button hover */
             --btn-primary-hover: #3587CD;
-            
+
             /* Ghost button / outline button */
             --btn-ghost-bg: transparent;
             --btn-ghost-text: #2B4560;
             --btn-ghost-border: #CBE0F5;
             --btn-ghost-hover: #E7F2FA;
-            
+
             /* Heading text color - Deep slate/navy */
-            --text-heading: #0D1E30; 
-            
+            --text-heading: #0D1E30;
+
             /* Body text color - Slate blue */
-            --text-body: #344A63; 
-            
+            --text-body: #344A63;
+
             /* Muted / secondary text - Lighter slate */
-            --text-muted: #647B95; 
-            
+            --text-muted: #647B95;
+
             /* Link color */
             --text-link: #4A9DE4;
-            
+
             /* Border color - Soft cool border */
-            --border: #D3E2F0; 
-            
+            --border: #D3E2F0;
+
             /* Badge background + text - Derived from warm gold ribbon */
-            --badge-bg: #FFF8E7; 
-            --badge-text: #A8861E; 
-            
+            --badge-bg: #FFF8E7;
+            --badge-text: #A8861E;
+
             /* Input field background + border */
             --input-bg: #FFFFFF;
             --input-border: #CBE0F5;
-            
+
             /* State Colors */
             --state-success: #3A9679;
             --state-warning: #D9951F;
             --state-danger: #D8636E;
-            
+
             /* Footer background */
             --bg-footer: #E8F1F9;
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-page); }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            overflow-x: hidden;
+        }
         .font-serif { font-family: 'Playfair Display', serif; }
-        
-        .fade-in { opacity: 0; transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+        /* Enhanced animations */
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
         .fade-in.in-view { opacity: 1; }
-        .slide-up { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .slide-up.in-view { opacity: 1; transform: translateY(0); }
+
+        .slide-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .slide-up.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Enhanced hover effects */
+        .btn-primary-hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(74, 157, 228, 0.25), 0 8px 10px -6px rgba(74, 157, 228, 0.25);
+        }
+
+        .btn-secondary-hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.1), 0 2px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card-hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        /* Enhanced card styles */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Improved accordion */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+        }
+        .accordion-content.open {
+            opacity: 1;
+        }
+
+        /* Enhanced form elements */
+        .form-input {
+            transition: all 0.2s ease-in-out;
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(74, 157, 228, 0.2);
+        }
+
+        /* Improved badge */
+        .badge-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Enhanced wave animation */
+        .wave-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        /* Improved section spacing */
+        .section-padding {
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+        }
+
+        @media (min-width: 768px) {
+            .section-padding {
+                padding-top: 8rem;
+                padding-bottom: 8rem;
+            }
+        }
     </style>
 
     <script>
@@ -102,13 +197,27 @@
                         warning: 'var(--state-warning)',
                         danger: 'var(--state-danger)',
                         footer: 'var(--bg-footer)'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 }
+                        },
+                        slideUp: {
+                            '0%': { opacity: 0, transform: 'translateY(40px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' }
+                        }
                     }
                 }
             }
         }
     </script>
 </head>
-<body id="top" class="text-body antialiased selection:bg-primary/20 selection:text-heading overflow-x-hidden">
+<body id="top" class="text-body antialiased selection:bg-primary/20 selection:text-heading">
 
 <!-- Splash Screen -->
 <div id="splash-screen" class="fixed inset-0 z-[100] bg-page flex items-center justify-center transition-all duration-1000 ease-in-out">
@@ -127,18 +236,30 @@
                 <div class="text-primary"><i data-feather="activity" class="w-6 h-6 sm:w-8 sm:h-8 stroke-[2.5]"></i></div>
                 <span class="font-serif">ClinicTrack Pro</span>
             </a>
-            
+
             <!-- Navbar Pages/Scroll Links -->
             <div class="hidden md:flex items-center gap-8 text-slate-700 font-medium text-[15px]">
-                <a href="#features" class="hover:text-primary transition-colors">Features</a>
-                <a href="#pricing" class="hover:text-primary transition-colors">Pricing</a>
-                <a href="#faq" class="hover:text-primary transition-colors">FAQs</a>
-                <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
+                <a href="#features" class="hover:text-primary transition-colors relative group">
+                    <span>Features</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#pricing" class="hover:text-primary transition-colors relative group">
+                    <span>Pricing</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#faq" class="hover:text-primary transition-colors relative group">
+                    <span>FAQs</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#contact" class="hover:text-primary transition-colors relative group">
+                    <span>Contact</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
             </div>
-            
+
             <!-- Quick Portal Nav Links -->
             <div class="flex items-center gap-4">
-                <a href="/dashboard" class="bg-primary hover:bg-primary-hover text-surface px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium text-xs sm:text-[15px] transition-all shadow-sm flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <a href="/dashboard" class="bg-primary hover:bg-primary-hover text-surface px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium text-xs sm:text-[15px] transition-all shadow-sm flex items-center gap-1.5 sm:gap-2 shrink-0 hover:btn-primary-hover">
                     <i data-feather="grid" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
                     <span>Open Workspace</span>
                 </a>
@@ -149,60 +270,60 @@
 
 <!-- Hero Portal Entry Section -->
 <section id="hero" class="overflow-hidden relative bg-page flex items-center justify-center min-h-[calc(100vh-64px)] pb-12">
-
     <!-- Animated Wave Canvas (Gold and Blue Ribbons) -->
-    <canvas id="waveCanvas" class="absolute inset-0 w-full h-full" style="pointer-events:none;"></canvas>
+    <div class="wave-container">
+        <canvas id="waveCanvas" class="absolute inset-0 w-full h-full" style="pointer-events:none;"></canvas>
+    </div>
 
     <!-- Portal Entry Content -->
     <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full pt-12">
-
         <!-- Badge -->
         <div class="slide-up inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-badgeText/20 bg-badgeBg/90 backdrop-blur-sm shadow-sm mb-8 cursor-default" style="transition-delay: 0.1s;">
-            <div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+            <div class="w-2 h-2 rounded-full bg-success animate-pulse badge-pulse"></div>
             <span class="text-[13px] font-semibold text-badgeText tracking-wide uppercase">Active Clinical Portal Workspace</span>
         </div>
 
         <!-- Headline -->
-        <h1 class="slide-up font-serif text-[3.5rem] sm:text-[4.5rem] lg:text-[5.5rem] leading-[1.08] text-heading tracking-[-0.03em] mb-6 font-medium" style="transition-delay: 0.25s;">
+        <h1 class="slide-up font-serif text-[2.5rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem] leading-[1.1] text-heading tracking-[-0.02em] mb-6 font-medium" style="transition-delay: 0.25s;">
             Smarter care,<br/>simpler records
         </h1>
 
         <!-- Subheadline -->
-        <p class="slide-up text-lg sm:text-xl text-muted mb-10 max-w-xl mx-auto leading-relaxed" style="transition-delay: 0.4s;">
+        <p class="slide-up text-lg sm:text-xl text-muted mb-10 max-w-2xl mx-auto leading-relaxed" style="transition-delay: 0.4s;">
             Patient management system for the modern practice — fast, secure, and ready to streamline your workflow.
         </p>
 
         <!-- CTA Buttons / Portal Navigation Grid -->
         <div class="slide-up flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto mb-16" style="transition-delay: 0.55s;">
-            <a href="/dashboard" class="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-primary hover:bg-primary-hover text-surface px-8 py-4 rounded-full font-semibold text-[16px] transition-all duration-200 shadow-xl shadow-primary/20 hover:shadow-2xl hover:-translate-y-0.5">
+            <a href="/dashboard" class="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-primary hover:bg-primary-hover text-surface px-8 py-4 rounded-full font-semibold text-[16px] transition-all duration-300 shadow-xl shadow-primary/20 hover:btn-primary-hover">
                 <i data-feather="grid" class="w-5 h-5"></i>
-                Enter Workspace Dashboard
+                <span>Enter Workspace Dashboard</span>
             </a>
-            <a href="/patients" class="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-ghostBg border border-ghostBorder hover:bg-ghostHover text-ghostText px-8 py-4 rounded-full font-semibold text-[16px] transition-all duration-200 shadow-sm hover:shadow-md">
+            <a href="/patients" class="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-ghostBg border border-ghostBorder hover:bg-ghostHover text-ghostText px-8 py-4 rounded-full font-semibold text-[16px] transition-all duration-300 shadow-sm hover:btn-secondary-hover">
                 <i data-feather="users" class="w-5 h-5"></i>
-                Manage Patients
+                <span>Manage Patients</span>
             </a>
         </div>
 
         <!-- Exact representation of user uploaded image: Hero row with Emojis -->
         <div class="slide-up mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-slate-700 font-semibold px-4 pt-4 border-t border-borderLine/40 max-w-3xl mx-auto" style="transition-delay: 0.7s;">
-            <a href="/dashboard" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <span class="text-xl">🏥</span>
+            <a href="/dashboard" class="flex items-center gap-2 hover:opacity-80 transition-opacity group">
+                <span class="text-xl transition-transform group-hover:scale-110">🏥</span>
                 <span class="text-slate-700 text-[15px] sm:text-[16px] tracking-tight">ClinicTrack</span>
             </a>
             <div class="w-1.5 h-1.5 rounded-full bg-slate-300 hidden md:block"></div>
-            <a href="/patients" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <span class="text-xl">📋</span>
+            <a href="/patients" class="flex items-center gap-2 hover:opacity-80 transition-opacity group">
+                <span class="text-xl transition-transform group-hover:scale-110">📋</span>
                 <span class="text-slate-700 text-[15px] sm:text-[16px] tracking-tight">Patient Records</span>
             </a>
             <div class="w-1.5 h-1.5 rounded-full bg-slate-300 hidden md:block"></div>
-            <a href="/dashboard" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <span class="text-xl">💊</span>
+            <a href="/dashboard" class="flex items-center gap-2 hover:opacity-80 transition-opacity group">
+                <span class="text-xl transition-transform group-hover:scale-110">💊</span>
                 <span class="text-slate-700 text-[15px] sm:text-[16px] tracking-tight">Prescriptions</span>
             </a>
             <div class="w-1.5 h-1.5 rounded-full bg-slate-300 hidden md:block"></div>
-            <a href="/dashboard" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <span class="text-xl">📅</span>
+            <a href="/dashboard" class="flex items-center gap-2 hover:opacity-80 transition-opacity group">
+                <span class="text-xl transition-transform group-hover:scale-110">📅</span>
                 <span class="text-slate-700 text-[15px] sm:text-[16px] tracking-tight">Follow-ups</span>
             </a>
         </div>
@@ -212,15 +333,15 @@
 <!-- Features Section -->
 <section id="features" class="py-24 bg-surface border-y border-borderLine relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="text-center max-w-3xl mx-auto mb-16 slide-up">
             <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium text-heading mb-4">Core Clinical Features</h2>
-            <p class="text-lg text-muted">Complete control over your clinical operations with simple, highly efficient medical tooling.</p>
+            <p class="text-lg text-muted max-w-2xl mx-auto">Complete control over your clinical operations with simple, highly efficient medical tooling.</p>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Feature 1: Dynamic Dashboard -->
-            <div class="bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+            <div style="transition-delay: 0.1s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
+                <div class="w-14 h-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                     <i data-feather="bar-chart-2" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Dynamic Dashboard</h3>
@@ -230,8 +351,8 @@
             </div>
 
             <!-- Feature 2: Patient Directory -->
-            <div class="bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center mb-6 group-hover:bg-orange-500 group-hover:text-white transition-all">
+            <div style="transition-delay: 0.2s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
+                <div class="w-14 h-14 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center mb-6 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="users" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Patient Directory</h3>
@@ -241,8 +362,8 @@
             </div>
 
             <!-- Feature 3: Clinical Encounters -->
-            <div class="bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+            <div style="transition-delay: 0.3s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
+                <div class="w-14 h-14 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="activity" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Clinical Encounters</h3>
@@ -252,8 +373,8 @@
             </div>
 
             <!-- Feature 4: Printable Prescriptions -->
-            <div class="bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:bg-purple-500 group-hover:text-white transition-all">
+            <div style="transition-delay: 0.1s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
+                <div class="w-14 h-14 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:bg-purple-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="printer" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Printable Prescriptions</h3>
@@ -263,8 +384,8 @@
             </div>
 
             <!-- Feature 5: Multi-Doctor Settings -->
-            <div class="bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center mb-6 group-hover:bg-teal-500 group-hover:text-white transition-all">
+            <div class="bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
+                <div class="w-14 h-14 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center mb-6 group-hover:bg-teal-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="settings" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Multi-Doctor Setup</h3>
@@ -274,8 +395,8 @@
             </div>
 
             <!-- Feature 6: Secure Storage -->
-            <div class="bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center mb-6 group-hover:bg-red-500 group-hover:text-white transition-all">
+            <div style="transition-delay: 0.3s;" class="slide-up bg-page hover:bg-white rounded-2xl p-8 border border-borderLine/60 shadow-sm hover:feature-card-hover card-hover group">
+                <div class="w-14 h-14 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center mb-6 group-hover:bg-red-500 group-hover:text-white transition-all duration-300">
                     <i data-feather="database" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-heading mb-3">Secure Storage</h3>
@@ -290,14 +411,14 @@
 <!-- Pricing Section -->
 <section id="pricing" class="py-24 bg-page relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="text-center max-w-3xl mx-auto mb-16 slide-up">
             <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium text-heading mb-4">Simple, practice-aligned plans</h2>
-            <p class="text-lg text-muted">A pricing tier to match your clinical workload perfectly. No hidden fees.</p>
+            <p class="text-lg text-muted max-w-2xl mx-auto">A pricing tier to match your clinical workload perfectly. No hidden fees.</p>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             <!-- Plan 1 -->
-            <div class="bg-white rounded-2xl p-8 border border-borderLine shadow-sm flex flex-col hover:shadow-md transition-all">
+            <div style="transition-delay: 0.1s;" class="slide-up bg-white rounded-2xl p-8 border border-borderLine shadow-sm flex flex-col card-hover transition-all hover:shadow-lg">
                 <h3 class="text-lg font-bold text-heading">Starter</h3>
                 <p class="text-sm text-muted mt-1">For new practitioners</p>
                 <div class="my-6">
@@ -310,13 +431,13 @@
                     <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-success"></i> Print prescriptions</li>
                     <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-success"></i> Clinic and Doctor profile setup</li>
                 </ul>
-                <a href="/dashboard" class="block text-center py-3 px-6 rounded-xl border border-ghostBorder hover:bg-ghostHover text-ghostText font-medium transition-all">
+                <a href="/dashboard" class="block text-center py-3 px-6 rounded-xl border border-ghostBorder hover:bg-ghostHover text-ghostText font-medium transition-all hover:btn-secondary-hover">
                     Launch Starter
                 </a>
             </div>
 
             <!-- Plan 2 -->
-            <div class="bg-white rounded-2xl p-8 border-2 border-primary shadow-lg flex flex-col relative scale-[1.03] z-10">
+            <div style="transition-delay: 0.3s;" class="slide-up bg-white rounded-2xl p-8 border-2 border-primary shadow-lg flex flex-col relative card-hover transition-all hover:shadow-xl scale-[1.02]">
                 <div class="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
                     Most Popular
                 </div>
@@ -332,7 +453,7 @@
                     <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-success"></i> Pro script customization</li>
                     <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-success"></i> Advanced Patient filtering</li>
                 </ul>
-                <a href="/dashboard" class="block text-center py-3 px-6 rounded-xl bg-primary hover:bg-primary-hover text-white font-medium transition-all shadow-md shadow-primary/20">
+                <a href="/dashboard" class="block text-center py-3 px-6 rounded-xl bg-primary hover:bg-primary-hover text-white font-medium transition-all shadow-md shadow-primary/20 hover:btn-primary-hover">
                     Get Started Pro
                 </a>
             </div>
@@ -343,19 +464,19 @@
 <!-- FAQs Section -->
 <section id="faq" class="py-24 bg-surface border-y border-borderLine relative">
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-16">
+        <div class="text-center mb-16 slide-up">
             <h2 class="font-serif text-3xl sm:text-4xl font-medium text-heading mb-4">Frequently Asked Questions</h2>
-            <p class="text-lg text-muted">Quick answers regarding ClinicTrack Pro workflow benefits.</p>
+            <p class="text-lg text-muted max-w-2xl mx-auto">Quick answers regarding ClinicTrack Pro workflow benefits.</p>
         </div>
-        
+
         <div class="space-y-4">
             <!-- Accordion 1 -->
-            <div class="border border-borderLine rounded-2xl overflow-hidden bg-page">
-                <button class="w-full px-6 py-5 text-left font-semibold text-heading flex items-center justify-between select-none focus:outline-none" onclick="toggleAccordion(1)">
+            <div style="transition-delay: 0.1s;" class="slide-up border border-borderLine rounded-2xl overflow-hidden bg-page transition-all hover:border-primary/30">
+                <button class="w-full px-6 py-5 text-left font-semibold text-heading flex items-center justify-between select-none focus:outline-none group" onclick="toggleAccordion(1)">
                     <span>Is the patient personal details entirely secure?</span>
-                    <i data-feather="chevron-down" id="icon-1" class="w-5 h-5 transition-transform duration-300"></i>
+                    <i data-feather="chevron-down" id="icon-1" class="w-5 h-5 transition-transform duration-300 group-hover:text-primary"></i>
                 </button>
-                <div id="content-1" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                <div id="content-1" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out accordion-content">
                     <div class="px-6 pb-5 pt-1 text-sm text-body leading-relaxed border-t border-borderLine/30">
                         Yes, ClinicTrack Pro keeps your patient directories and encounter details hosted in fully sanitized databases. Form postings use robust relational mapping protocols to block common injection pathways.
                     </div>
@@ -363,12 +484,12 @@
             </div>
 
             <!-- Accordion 2 -->
-            <div class="border border-borderLine rounded-2xl overflow-hidden bg-page">
-                <button class="w-full px-6 py-5 text-left font-semibold text-heading flex items-center justify-between select-none focus:outline-none" onclick="toggleAccordion(2)">
+            <div style="transition-delay: 0.2s;" class="slide-up border border-borderLine rounded-2xl overflow-hidden bg-page transition-all hover:border-primary/30">
+                <button class="w-full px-6 py-5 text-left font-semibold text-heading flex items-center justify-between select-none focus:outline-none group" onclick="toggleAccordion(2)">
                     <span>Can we print prescription receipts instantly?</span>
-                    <i data-feather="chevron-down" id="icon-2" class="w-5 h-5 transition-transform duration-300"></i>
+                    <i data-feather="chevron-down" id="icon-2" class="w-5 h-5 transition-transform duration-300 group-hover:text-primary"></i>
                 </button>
-                <div id="content-2" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                <div id="content-2" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out accordion-content">
                     <div class="px-6 pb-5 pt-1 text-sm text-body leading-relaxed border-t border-borderLine/30">
                         Absolutely. Inside any patient profile under the Visited Encounter list, you can launch a beautifully styled print-ready digital script showing clinic settings info, medication lists, dosages, and notes.
                     </div>
@@ -376,12 +497,12 @@
             </div>
 
             <!-- Accordion 3 -->
-            <div class="border border-borderLine rounded-2xl overflow-hidden bg-page">
-                <button class="w-full px-6 py-5 text-left font-semibold text-heading flex items-center justify-between select-none focus:outline-none" onclick="toggleAccordion(3)">
+            <div style="transition-delay: 0.3s;" class="slide-up border border-borderLine rounded-2xl overflow-hidden bg-page transition-all hover:border-primary/30">
+                <button class="w-full px-6 py-5 text-left font-semibold text-heading flex items-center justify-between select-none focus:outline-none group" onclick="toggleAccordion(3)">
                     <span>Is it easy to configure multiple doctors for larger clinical settings?</span>
-                    <i data-feather="chevron-down" id="icon-3" class="w-5 h-5 transition-transform duration-300"></i>
+                    <i data-feather="chevron-down" id="icon-3" class="w-5 h-5 transition-transform duration-300 group-hover:text-primary"></i>
                 </button>
-                <div id="content-3" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                <div id="content-3" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out accordion-content">
                     <div class="px-6 pb-5 pt-1 text-sm text-body leading-relaxed border-t border-borderLine/30">
                         Yes! Open settings on the quick navigation tab and easily append active medical specialists with specific consultation prices and titles. They will immediately become assignable during new encounter entries.
                     </div>
@@ -394,15 +515,15 @@
 <!-- Contact Section -->
 <section id="contact" class="py-24 bg-page relative">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-3xl border border-borderLine shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+        <div class="bg-white rounded-3xl border border-borderLine shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 transition-all hover:shadow-2xl">
             <!-- Info Sidebar -->
-            <div class="lg:col-span-5 bg-gradient-to-br from-[#4A9DE4] to-[#2B609E] p-10 lg:p-14 text-white flex flex-col justify-between">
+            <div style="transition-delay: 0.1s;" class="slide-up lg:col-span-5 bg-gradient-to-br from-[#4A9DE4] to-[#2B609E] p-10 lg:p-14 text-white flex flex-col justify-between">
                 <div>
                     <span class="text-xs font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">Contact Support</span>
                     <h2 class="font-serif text-3xl sm:text-4xl font-medium mt-6 mb-4">Let's talk settings</h2>
                     <p class="text-white/80 leading-relaxed text-sm">Need help configuring ClinicTrack Pro or scaling your practice databases? Submit inquiries directly.</p>
                 </div>
-                
+
                 <div class="space-y-6 mt-12">
                     <div class="flex items-center gap-4 text-sm">
                         <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><i data-feather="mail" class="w-5 h-5"></i></div>
@@ -414,27 +535,27 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Contact Form -->
-            <div class="lg:col-span-7 p-10 lg:p-14">
+            <div style="transition-delay: 0.3s;" class="slide-up lg:col-span-7 p-10 lg:p-14">
                 <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
                     <div>
                         <label class="block text-sm font-semibold text-heading mb-2">Practice Name</label>
-                        <input type="text" required placeholder="e.g. CareMax Clinic" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-primary bg-inputBg transition-colors" />
+                        <input type="text" required placeholder="e.g. CareMax Clinic" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-primary bg-inputBg transition-colors form-input" />
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-heading mb-2">Email Address</label>
-                        <input type="email" required placeholder="e.g. doctor@caremax.com" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-primary bg-inputBg transition-colors" />
+                        <input type="email" required placeholder="e.g. doctor@caremax.com" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-primary bg-inputBg transition-colors form-input" />
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-heading mb-2">Message</label>
-                        <textarea required rows="4" placeholder="How can we assist your clinical practice?" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-primary bg-inputBg transition-colors resize-none"></textarea>
+                        <textarea required rows="4" placeholder="How can we assist your clinical practice?" class="w-full px-4 py-3 rounded-xl border border-inputBorder focus:outline-none focus:border-primary bg-inputBg transition-colors resize-none form-input"></textarea>
                     </div>
-                    
-                    <button type="submit" class="w-full py-4 text-center rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold transition-all shadow-md shadow-primary/25 hover:shadow-lg">
+
+                    <button type="submit" class="w-full py-4 text-center rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold transition-all shadow-md shadow-primary/25 hover:btn-primary-hover">
                         Submit Inquiry
                     </button>
-                    
+
                     <!-- Alert Success placeholder -->
                     <div id="contact-success" class="hidden p-4 bg-success/10 border border-success/20 rounded-xl text-success font-medium text-sm flex items-center gap-2">
                         <i data-feather="check-circle" class="w-5 h-5"></i>
@@ -455,10 +576,22 @@
                 <span class="font-serif">ClinicTrack Pro</span>
             </div>
             <div class="flex items-center gap-6 text-sm text-body font-medium">
-                <a href="#features" class="hover:text-primary transition-colors">Features</a>
-                <a href="#pricing" class="hover:text-primary transition-colors">Pricing</a>
-                <a href="#faq" class="hover:text-primary transition-colors">FAQs</a>
-                <a href="/dashboard" class="hover:text-primary transition-colors">Workspace</a>
+                <a href="#features" class="hover:text-primary transition-colors relative group">
+                    <span>Features</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#pricing" class="hover:text-primary transition-colors relative group">
+                    <span>Pricing</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#faq" class="hover:text-primary transition-colors relative group">
+                    <span>FAQs</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/dashboard" class="hover:text-primary transition-colors relative group">
+                    <span>Workspace</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
             </div>
         </div>
         <div class="mt-8 pt-8 border-t border-borderLine/60 text-center md:text-left text-sm text-muted">
@@ -490,22 +623,27 @@
     function toggleAccordion(id) {
         const content = document.getElementById(`content-${id}`);
         const icon = document.getElementById(`icon-${id}`);
-        
+
         // Match with other open accordions and close them if necessary
         for (let i = 1; i <= 3; i++) {
             if (i !== id) {
                 const otherContent = document.getElementById(`content-${i}`);
                 const otherIcon = document.getElementById(`icon-${i}`);
-                if (otherContent) otherContent.style.maxHeight = null;
+                if (otherContent) {
+                    otherContent.style.maxHeight = null;
+                    otherContent.classList.remove('open');
+                }
                 if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
             }
         }
 
         if (content.style.maxHeight) {
             content.style.maxHeight = null;
+            content.classList.remove('open');
             icon.style.transform = 'rotate(0deg)';
         } else {
             content.style.maxHeight = content.scrollHeight + "px";
+            content.classList.add('open');
             icon.style.transform = 'rotate(180deg)';
         }
     }
@@ -537,24 +675,24 @@
     // 2 main ribbons (Gold and Blue)
     const ribbons = [
       // Gold ribbon
-      { 
+      {
         yBase: 0.75, // sits in lower region
         amp: 60,
         freq: 0.0015,
         phase: 0,
-        speed: -0.0008, 
-        baseThick: 140, 
+        speed: -0.0008,
+        baseThick: 140,
         colorPeak: '#f5d87a',
         colorEdge: '#ffe9a8'
       },
       // Blue ribbon
-      { 
+      {
         yBase: 0.75,
         amp: 80,
         freq: 0.0012,
         phase: Math.PI, // start opposite phase so they weave
         speed: 0.001,
-        baseThick: 130, 
+        baseThick: 130,
         colorPeak: '#5aaff5',
         colorEdge: '#a8d8ff'
       }
@@ -581,7 +719,7 @@
           // Ribbon thickness varies slightly with a slow sine to simulate twist
           const twist1 = Math.sin(x1 * r.freq * 0.8 + t * r.speed * 1.5 + r.phase * 0.5);
           const twist2 = Math.sin(x2 * r.freq * 0.8 + t * r.speed * 1.5 + r.phase * 0.5);
-          
+
           const thick1 = r.baseThick * (0.8 + 0.2 * twist1);
           const thick2 = r.baseThick * (0.8 + 0.2 * twist2);
 
@@ -610,7 +748,7 @@
           grad.addColorStop(1, '#ffffff'); // fade to pure white at bottom edge
 
           ctx.fillStyle = grad;
-          ctx.strokeStyle = grad; 
+          ctx.strokeStyle = grad;
           ctx.lineWidth = 1;
           ctx.fill();
           ctx.stroke();
@@ -653,10 +791,10 @@
     function animate(timestamp) {
       time = timestamp;
       ctx.clearRect(0, 0, w, h);
-      
+
       drawRibbons(time);
       fadeEdges();
-      
+
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
@@ -684,11 +822,11 @@
                 observer.observe(el);
             });
         }
-        
+
         // Handle splash screen and hero animations
         const splash = document.getElementById('splash-screen');
         const splashLogo = document.getElementById('splash-logo');
-        
+
         // 1. Animate logo in right-to-left
         setTimeout(() => {
             if(splashLogo) {
@@ -702,7 +840,7 @@
                 // Fade splash background out
                 splash.style.opacity = '0';
                 splash.style.pointerEvents = 'none';
-                
+
                 // Slightly slide the logo up as it fades so it feels connected to the hero moving up
                 if(splashLogo) {
                     splashLogo.style.transform = 'translateY(-20px) scale(0.95)';

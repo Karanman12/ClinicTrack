@@ -1,6 +1,42 @@
 /* ============================================================
-   ClinicTrack Pro — Main Stylings
+   ClinicTrack Pro — Enhanced Styling (Inspired by Handhold.io)
    ============================================================ */
+
+/* CSS Custom Properties for Design System */
+:root {
+    /* Colors */
+    --color-primary: #2563EB;
+    --color-primary-hover: #1D4ED8;
+    --color-primary-active: #1E40AF;
+    --color-gray-50: #F9FAFB;
+    --color-gray-100: #F3F4F6;
+    --color-gray-200: #E5E7EB;
+    --color-gray-300: #D1D5DB;
+    --color-gray-600: #4B5563;
+    --color-gray-700: #374151;
+    --color-gray-900: #111827;
+    
+    /* Typography */
+    --font-sans: 'Inter', sans-serif;
+    --letter-spacing-tight: -0.18px;
+    --letter-spacing-normal: -0.13px;
+    
+    /* Spacing Scale */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-normal: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
 
 /* Custom Scrollbar for a polished look */
 ::-webkit-scrollbar { 
@@ -18,10 +54,70 @@
     background: #94a3b8; 
 }
 
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
 /* Base Body Styles */
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
+    font-family: var(--font-sans);
+    color: var(--color-gray-700);
+}
+
+/* GPU Acceleration for Smooth Scrolling */
+body, html, [data-scroll] {
+}
+
+/* Enhanced Button Styles (Pill-shaped, inspired by Handhold) */
+button {
+    border-radius: 9999px !important;
+    transition: all var(--transition-fast) !important;
+}
+
+button.btn-primary,
+button[type="submit"],
+.btn,
+button:not([class*="px-"]):not([class*="rounded"]) {
+    background-color: var(--color-primary) !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 9999px !important;
+    font-weight: 500 !important;
+    transition: all var(--transition-fast) !important;
+    cursor: pointer !important;
+}
+
+button.btn-primary:hover,
+button[type="submit"]:hover,
+.btn:hover {
+    background-color: var(--color-primary-hover) !important;
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-1px) !important;
+}
+
+button.btn-primary:active,
+button[type="submit"]:active,
+.btn:active {
+    background-color: var(--color-primary-active) !important;
+    transform: scale(0.95) !important;
+}
+
+button.btn-secondary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1px solid var(--color-gray-200);
+    padding: 9px 19px;
+    border-radius: 9999px;
+}
+
+button.btn-secondary:hover {
+    background-color: var(--color-gray-50);
+    border-color: var(--color-gray-300);
 }
 
 /* Page Entry Transitions */
@@ -40,6 +136,51 @@ body {
     } 
 }
 
+/* Scroll-Triggered Animation States */
+.scroll-fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-fade-in.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-slide-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-slide-left.in-view {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-slide-right {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-slide-right.in-view {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-scale {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-scale.in-view {
+    opacity: 1;
+    transform: scale(1);
+}
+
 /* Toast Notifications Animation */
 @keyframes slideInRight {
     from { transform: translateX(100%); opacity: 0; }
@@ -49,22 +190,35 @@ body {
     animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Table Row Hover Effects */
+/* Enhanced Table Row Hover Effects */
 tbody tr.cursor-pointer {
-    transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
-}
-tbody tr.cursor-pointer:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    z-index: 10;
-    position: relative;
-    background-color: #ffffff;
+    transition: transform var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast) !important;
+    border-bottom: 1px solid var(--color-gray-200) !important;
 }
 
-/* Input Error States */
-.input-error { 
-    border-color: #ef4444 !important; 
-    background-color: #fef2f2 !important; 
+tbody tr.cursor-pointer:hover {
+    transform: translateY(-1px) !important;
+    background-color: #F9FAFB !important;
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.02) !important;
+    z-index: 10 !important;
+    position: relative !important;
+}
+
+/* Enhanced Card Styling */
+.card,
+[data-card] {
+    background-color: white !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: var(--shadow-sm) !important;
+    transition: all var(--transition-fast) !important;
+    border: none !important;
+}
+
+.card:hover,
+[data-card]:hover {
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-2px) !important;
 }
 
 /* Loading Overlay */
@@ -86,6 +240,28 @@ tbody tr.cursor-pointer:hover {
     pointer-events: auto; 
 }
 
+/* Sidebar Enhancement */
+#sidebar {
+    background-color: #FFFFFF;
+    border-right: 1px solid var(--color-gray-200);
+}
+
+#sidebar nav a {
+    border-radius: 8px;
+    transition: all var(--transition-fast);
+    margin-bottom: var(--spacing-sm);
+}
+
+#sidebar nav a:hover {
+    background-color: var(--color-gray-50);
+}
+
+#sidebar nav a.active,
+#sidebar nav a[data-active="true"] {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--color-primary);
+}
+
 /* Print Overrides for elements not caught by inline Tailwind */
 @media print {
     body {
@@ -103,3 +279,28 @@ tbody tr.cursor-pointer:hover {
         margin: 0.5in;
     }
 }
+
+/* Mobile Responsiveness - Touch-Friendly */
+@media (max-width: 640px) {
+    button,
+    button.btn-primary,
+    button[type="submit"],
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .card,
+    [data-card] {
+        padding: 16px;
+        border-radius: 8px;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+        min-height: 44px;
+    }
+}
+

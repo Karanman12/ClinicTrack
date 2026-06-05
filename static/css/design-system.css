@@ -1,0 +1,241 @@
+/* ============================================================
+   ClinicTrack Pro — Design System Override Layer
+   Handhold.io Inspired Premium UI (Overrides Tailwind)
+   ============================================================ */
+
+:root {
+    /* Colors - Premium Palette */
+    --primary: #2563EB;
+    --primary-hover: #1D4ED8;
+    --primary-active: #1E40AF;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-700: #374151;
+    
+    /* Transitions */
+    --transition: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   BUTTONS - Pill-shaped, smooth animations
+   ============================================================ */
+
+/* All buttons get pill shape */
+button,
+a[class*="btn"],
+input[type="button"],
+input[type="submit"] {
+    border-radius: 9999px !important;
+    transition: all var(--transition) !important;
+}
+
+/* Primary action buttons (blue) */
+button[class*="bg-blue"],
+a[class*="bg-blue"][class*="btn"],
+.bg-blue-600,
+.bg-blue-700 {
+    background-color: var(--primary) !important;
+    border-radius: 9999px !important;
+    font-weight: 500 !important;
+}
+
+button[class*="bg-blue"]:hover,
+a[class*="bg-blue"]:hover,
+.bg-blue-600:hover,
+.bg-blue-700:hover {
+    background-color: var(--primary-hover) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+}
+
+button[class*="bg-blue"]:active,
+a[class*="bg-blue"]:active {
+    transform: scale(0.95) !important;
+}
+
+/* ============================================================
+   INPUTS & FORMS - Clean, focused styling
+   ============================================================ */
+
+/* Input focus states */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
+    border-radius: 8px !important;
+    border: 1px solid var(--gray-200) !important;
+    transition: all var(--transition) !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+    background-color: #FAFBFF !important;
+}
+
+/* ============================================================
+   CARDS & CONTAINERS - Shadows instead of borders
+   ============================================================ */
+
+.bg-white[class*="border"],
+.bg-white[class*="rounded"],
+[class*="card"],
+.rounded-2xl {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    transition: all var(--transition) !important;
+}
+
+.bg-white:hover,
+.rounded-2xl:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* ============================================================
+   TABLE ROWS - Smooth hover effects
+   ============================================================ */
+
+tbody tr {
+    border-bottom: 1px solid var(--gray-200) !important;
+    transition: all var(--transition) !important;
+}
+
+tbody tr:hover {
+    background-color: var(--gray-50) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* ============================================================
+   SIDEBAR & NAVIGATION - Premium look
+   ============================================================ */
+
+#sidebar,
+nav {
+    border-right: 1px solid var(--gray-200) !important;
+    background-color: white !important;
+}
+
+#sidebar a,
+nav a {
+    border-radius: 8px !important;
+    transition: all var(--transition) !important;
+    margin-bottom: 4px !important;
+}
+
+#sidebar a:hover,
+nav a:hover,
+#sidebar a[class*="active"],
+nav a[class*="active"] {
+    background-color: rgba(37, 99, 235, 0.1) !important;
+    color: var(--primary) !important;
+}
+
+/* ============================================================
+   SCROLLBAR - Premium, minimal design
+   ============================================================ */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ============================================================
+   SMOOTH SCROLLING
+   ============================================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================
+   SCROLL ANIMATIONS (Already enhanced in app)
+   ============================================================ */
+
+.scroll-fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-fade-in.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================================
+   MOBILE RESPONSIVENESS - Touch-friendly
+   ============================================================ */
+
+@media (max-width: 640px) {
+    button,
+    a[class*="btn"],
+    input[type="button"],
+    input[type="submit"] {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+    
+    input,
+    textarea,
+    select {
+        min-height: 44px !important;
+    }
+}
+
+/* ============================================================
+   ACCESSIBILITY - Focus states, proper contrast
+   ============================================================ */
+
+*:focus-visible {
+    outline: 2px solid var(--primary) !important;
+    outline-offset: 2px !important;
+}
+
+button:focus-visible {
+    outline-offset: 4px !important;
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+
+@media print {
+    body {
+        background-color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
